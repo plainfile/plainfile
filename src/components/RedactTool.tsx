@@ -80,9 +80,11 @@ interface PendingRegion {
 export interface RedactToolProps {
   title?: string;
   description?: string;
+  /** Preset pattern ids (from PRESET_PATTERNS) pre-selected on this page. */
+  defaultPresets?: string[];
 }
 
-export function RedactTool({ title, description }: RedactToolProps) {
+export function RedactTool({ title, description, defaultPresets }: RedactToolProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const pageBitmapRef = useRef<ImageBitmap | null>(null);
@@ -98,7 +100,9 @@ export function RedactTool({ title, description }: RedactToolProps) {
   const [searchMatches, setSearchMatches] = useState<SearchMatch[]>([]);
   const [pendingRegion, setPendingRegion] = useState<PendingRegion | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedPresets, setSelectedPresets] = useState<Set<string>>(new Set());
+  const [selectedPresets, setSelectedPresets] = useState<Set<string>>(
+    () => new Set(defaultPresets ?? [])
+  );
   const selectedPresetsRef = useRef<Set<string>>(selectedPresets);
 
   useEffect(() => {
@@ -248,7 +252,7 @@ export function RedactTool({ title, description }: RedactToolProps) {
         setManualRegions([]);
         setSearchMatches([]);
         setSearchTerm("");
-        setSelectedPresets(new Set());
+        setSelectedPresets(new Set(defaultPresets ?? []));
 
         const bytes = await file.arrayBuffer();
         setFileName(file.name);
@@ -272,7 +276,7 @@ export function RedactTool({ title, description }: RedactToolProps) {
         setError(err instanceof Error ? err.message : String(err));
       }
     },
-    [ensureWorker, renderPage]
+    [ensureWorker, renderPage, defaultPresets]
   );
 
   const handleDrop = useCallback(

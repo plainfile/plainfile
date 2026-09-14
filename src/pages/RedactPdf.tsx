@@ -3,14 +3,25 @@ import { SEO } from "@/components/SEO";
 import { RedactTool } from "@/components/RedactTool";
 import { REDACTION_FAQ } from "@/lib/faq";
 import { Link } from "react-router";
-import { Landmark, UserRound, Stethoscope } from "lucide-react";
+import {
+  Landmark,
+  UserRound,
+  Stethoscope,
+  Mail,
+  Scale,
+  FileSearch,
+  BookOpen,
+} from "lucide-react";
 import { SCENARIOS } from "@/lib/scenarios";
 
-const scenarioMeta = [
-  { id: "bank-statement", icon: Landmark },
-  { id: "ssn", icon: UserRound },
-  { id: "medical-records", icon: Stethoscope },
-] as const;
+const scenarioIcons = {
+  "bank-statement": Landmark,
+  ssn: UserRound,
+  "medical-records": Stethoscope,
+  emails: Mail,
+  "legal-documents": Scale,
+  foia: FileSearch,
+} as const;
 
 export default function RedactPdf() {
   const softwareApplicationLd = {
@@ -56,11 +67,11 @@ export default function RedactPdf() {
           Popular redaction scenarios
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {scenarioMeta.map(({ id, icon: Icon }) => {
-            const s = SCENARIOS.find((x) => x.id === id)!;
+          {SCENARIOS.map((s) => {
+            const Icon = scenarioIcons[s.id as keyof typeof scenarioIcons] ?? FileSearch;
             return (
               <Link
-                key={id}
+                key={s.id}
                 to={s.path}
                 className="group rounded-xl border bg-card p-6 shadow-sm transition-colors hover:border-[#0066CC]/30"
               >
@@ -74,6 +85,45 @@ export default function RedactPdf() {
               </Link>
             );
           })}
+        </div>
+      </section>
+
+      <section className="mt-16 border-t pt-10">
+        <h2 className="mb-6 text-2xl font-bold tracking-tight">
+          Learn
+        </h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Link
+            to="/guides/how-to-redact-pdf-properly"
+            className="group flex items-start gap-4 rounded-xl border bg-card p-6 shadow-sm transition-colors hover:border-[#0066CC]/30"
+          >
+            <BookOpen className="mt-1 h-8 w-8 shrink-0 text-[#0066CC]" />
+            <div>
+              <h3 className="mb-2 text-lg font-semibold group-hover:text-[#0066CC]">
+                How to redact a PDF properly (and why black boxes fail)
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Famous redaction leaks, the attacker's checklist for testing any
+                redacted file, and the full sanitization checklist — with an
+                interactive demo you can try right on the page.
+              </p>
+            </div>
+          </Link>
+          <Link
+            to="/guides/why-black-marker-redaction-fails"
+            className="group flex items-start gap-4 rounded-xl border bg-card p-6 shadow-sm transition-colors hover:border-[#0066CC]/30"
+          >
+            <BookOpen className="mt-1 h-8 w-8 shrink-0 text-[#0066CC]" />
+            <div>
+              <h3 className="mb-2 text-lg font-semibold group-hover:text-[#0066CC]">
+                Why black marker redaction doesn't work
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Marker on paper shows through; black boxes in PDFs leave the text
+                copyable. Every marker failure explained — and what works instead.
+              </p>
+            </div>
+          </Link>
         </div>
       </section>
 
