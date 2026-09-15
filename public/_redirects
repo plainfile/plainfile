@@ -1,1 +1,8 @@
+# Cloudflare Pages redirects — PlainFile
+#
+# 301 quietkit.io -> plainfile.io настраивается на уровне зоны
+# (Rules -> Redirect Rules), т.к. _redirects не поддерживает
+# domain-level redirects. См. content/cloudflare-301-setup.md.
+#
+# SPA fallback — обязателен, без него прямые заходы на /pdf/redact и др. дадут 404
 /*    /index.html    200
