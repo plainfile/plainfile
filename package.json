@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "plainfile",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -15,7 +15,7 @@
     "verify": "node verify.mjs",
     "test": "node verify.mjs",
     "predeploy": "npm run build ; npm run postbuild; PUPPETEER_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run prerender",
-    "deploy": "npm run predeploy; npx wrangler pages deploy ./dist --project-name=quietkit"
+    "deploy": "npm run predeploy; npx wrangler pages deploy ./dist --project-name=plainfile"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

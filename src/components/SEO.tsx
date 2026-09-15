@@ -9,7 +9,7 @@ export interface SEOProps {
   jsonLd?: object | object[];
 }
 
-const DOMAIN = 'https://quietkit.io';
+const DOMAIN = 'https://plainfile.io';
 const DEFAULT_OG = '/og/default.png';
 
 export function SEO({
@@ -20,7 +20,7 @@ export function SEO({
   ogImage = DEFAULT_OG,
   jsonLd,
 }: SEOProps) {
-  const fullTitle = noSuffix ? title : `${title} — QuietKit`;
+  const fullTitle = noSuffix ? title : `${title} — PlainFile`;
   const canonical = `${DOMAIN}${path}`;
   const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${DOMAIN}${ogImage}`;
   const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];

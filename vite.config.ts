@@ -30,8 +30,8 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       manifest: {
-        name: 'QuietKit',
-        short_name: 'QuietKit',
+        name: 'PlainFile',
+        short_name: 'PlainFile',
         description: 'Free private browser tools for your files',
         theme_color: '#0066CC',
         background_color: '#ffffff',

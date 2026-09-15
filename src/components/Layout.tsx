@@ -34,7 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight">
             <LogoMark className="w-5 h-5 text-blue-600" />
-            <span>QuietKit</span>
+            <span>PlainFile</span>
           </Link>
 
           <nav className="hidden items-center gap-6 md:flex">
@@ -99,7 +99,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 sm:px-6 lg:px-8">
           {PRODUCT_HUNT_POST_ID && (
             <a
-              href={`https://www.producthunt.com/posts/${PRODUCT_HUNT_POST_ID}?utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-quietkit-2`}
+              href={`https://www.producthunt.com/posts/${PRODUCT_HUNT_POST_ID}?utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-plainfile-2`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -124,7 +124,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               ))}
             </div>
             <p>Free. No uploads. No sign-ups. Analytics only with your consent.</p>
-            <p>&copy; {new Date().getFullYear()} QuietKit</p>
+            <p>&copy; {new Date().getFullYear()} PlainFile</p>
           </div>
         </div>
       </footer>

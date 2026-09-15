@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://quietkit.io/sitemap.xml
+Sitemap: https://plainfile.io/sitemap.xml

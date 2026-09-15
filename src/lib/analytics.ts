@@ -5,7 +5,7 @@ const GA_ID =
     ? (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined)
     : undefined;
 const CONSENT_KEY = 'cookie-consent';
-const LOADED_FLAG = '__quietkitGaLoaded';
+const LOADED_FLAG = '__plainfileGaLoaded';
 
 export type Consent = 'accepted' | 'declined' | null;
 
@@ -110,7 +110,7 @@ function initGA(): void {
   document.head.appendChild(script);
 
   // Expose a manual helper for diagnostics.
-  // (window as unknown as Record<string, unknown>).__quietkitGaDebug = {
+  // (window as unknown as Record<string, unknown>).__plainfileGaDebug = {
   //   measurementId: GA_ID,
   //   dataLayer: () => win.dataLayer,
   //   sendPageView: () => gtag('event', 'page_view'),

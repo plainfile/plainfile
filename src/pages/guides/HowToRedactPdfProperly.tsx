@@ -13,11 +13,11 @@ export default function HowToRedactPdfProperly() {
     headline: "How to Redact a PDF Properly (and Why Black Boxes Fail)",
     description:
       "True PDF redaction means deleting content from the document structure — not drawing black boxes over it. Threat model, famous failures, sanitization checklist and verification steps.",
-    author: { "@type": "Organization", name: "QuietKit" },
-    publisher: { "@type": "Organization", name: "QuietKit" },
+    author: { "@type": "Organization", name: "PlainFile" },
+    publisher: { "@type": "Organization", name: "PlainFile" },
     datePublished: PUBLISHED,
     dateModified: PUBLISHED,
-    mainEntityOfPage: "https://quietkit.io/guides/how-to-redact-pdf-properly",
+    mainEntityOfPage: "https://plainfile.io/guides/how-to-redact-pdf-properly",
   };
 
   return (
@@ -35,7 +35,7 @@ export default function HowToRedactPdfProperly() {
             How to Redact a PDF Properly (and Why Black Boxes Fail)
           </h1>
           <p className="text-sm text-muted-foreground">
-            By the QuietKit team · Published September 14, 2026 · 8 min read
+            By the PlainFile team · Published September 14, 2026 · 8 min read
           </p>
         </header>
 

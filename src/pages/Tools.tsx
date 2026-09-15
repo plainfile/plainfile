@@ -44,7 +44,7 @@ export default function Tools() {
     <Layout>
       <SEO
         title="All Tools"
-        description="Every QuietKit tool runs 100% in your browser: PDF redaction, HEIC conversion, EXIF removal, form filling. Free, unlimited, private by design."
+        description="Every PlainFile tool runs 100% in your browser: PDF redaction, HEIC conversion, EXIF removal, form filling. Free, unlimited, private by design."
         path="/tools"
       />
       <h1 className="mb-8 text-3xl font-bold tracking-tight">Tools</h1>

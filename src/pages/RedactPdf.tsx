@@ -27,10 +27,10 @@ export default function RedactPdf() {
   const softwareApplicationLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "QuietKit PDF Redactor",
+    name: "PlainFile PDF Redactor",
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Any (browser)",
-    url: "https://quietkit.io/pdf/redact",
+    url: "https://plainfile.io/pdf/redact",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     description:
       "Browser-based PDF redaction that permanently deletes text, images and metadata. No upload, no sign-up.",

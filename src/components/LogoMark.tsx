@@ -1,4 +1,4 @@
-// QuietKit logo mark: document with a redaction bar.
+// PlainFile logo mark: document with a redaction bar.
 // Follows lucide conventions (24x24 grid, currentColor) so it can be used
 // interchangeably with lucide icons.
 export function LogoMark({ className }: { className?: string }) {

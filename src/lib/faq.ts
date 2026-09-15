@@ -5,9 +5,9 @@ export interface FAQItem {
 
 export const REDACTION_FAQ: FAQItem[] = [
   {
-    question: 'How does QuietKit redact PDFs?',
+    question: 'How does PlainFile redact PDFs?',
     answer:
-      'QuietKit runs MuPDF inside your browser as WebAssembly. When you apply redactions, it removes the selected text, images and metadata from the actual PDF bytes, then re-verifies that nothing extractable remains.',
+      'PlainFile runs MuPDF inside your browser as WebAssembly. When you apply redactions, it removes the selected text, images and metadata from the actual PDF bytes, then re-verifies that nothing extractable remains.',
   },
   {
     question: 'Do my files leave my device?',

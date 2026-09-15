@@ -14,10 +14,10 @@ export default function RedactScenario({ scenario }: RedactScenarioProps) {
   const softwareApplicationLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: `QuietKit ${scenario.label}`,
+    name: `PlainFile ${scenario.label}`,
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Any (browser)",
-    url: `https://quietkit.io${scenario.path}`,
+    url: `https://plainfile.io${scenario.path}`,
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     description: scenario.description,
     featureList:
@@ -32,7 +32,7 @@ export default function RedactScenario({ scenario }: RedactScenarioProps) {
     totalTime: "PT2M",
     tool: {
       "@type": "HowToTool",
-      name: "QuietKit PDF Redactor",
+      name: "PlainFile PDF Redactor",
     },
     step: scenario.steps.map((s, idx) => ({
       "@type": "HowToStep",

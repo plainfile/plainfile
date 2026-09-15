@@ -10,6 +10,10 @@ async function startServer() {
   const proc = spawn("npm", ["run", "dev"], {
     cwd: path.resolve(__dirname, ".."),
     stdio: "pipe",
+    // Own process group so we can kill npm AND the vite grandchild —
+    // otherwise vite survives SIGTERM to npm and holds our stdout pipe
+    // open, so this script never exits.
+    detached: true,
   });
 
   const url = await new Promise((resolve, reject) => {
@@ -77,7 +81,11 @@ async function main() {
     console.error(err);
     process.exitCode = 1;
   } finally {
-    proc.kill("SIGTERM");
+    try {
+      process.kill(-proc.pid, "SIGTERM");
+    } catch {
+      proc.kill("SIGTERM");
+    }
   }
 }
 

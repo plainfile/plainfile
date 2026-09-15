@@ -13,11 +13,11 @@ export default function WhyBlackMarkerFails() {
     headline: "Why Black Marker Redaction Doesn't Work — on Paper or in PDFs",
     description:
       "Black markers show through on scans, and black rectangles in PDF editors sit on top of live text. A breakdown of every marker-based redaction failure — and what actually works.",
-    author: { "@type": "Organization", name: "QuietKit" },
-    publisher: { "@type": "Organization", name: "QuietKit" },
+    author: { "@type": "Organization", name: "PlainFile" },
+    publisher: { "@type": "Organization", name: "PlainFile" },
     datePublished: PUBLISHED,
     dateModified: PUBLISHED,
-    mainEntityOfPage: "https://quietkit.io/guides/why-black-marker-redaction-fails",
+    mainEntityOfPage: "https://plainfile.io/guides/why-black-marker-redaction-fails",
   };
 
   return (
@@ -35,7 +35,7 @@ export default function WhyBlackMarkerFails() {
             Why Black Marker Redaction Doesn't Work — on Paper or in PDFs
           </h1>
           <p className="text-sm text-muted-foreground">
-            By the QuietKit team · Published September 14, 2026 · 6 min read
+            By the PlainFile team · Published September 14, 2026 · 6 min read
           </p>
         </header>
 

@@ -126,7 +126,7 @@ export const SCENARIOS: ScenarioConfig[] = [
       {
         question: "Why not just draw black boxes in a PDF editor?",
         answer:
-          "A black rectangle in most editors is an annotation layered on top of the text. The underlying text stays in the file and can be selected, copied or extracted with free tools. QuietKit applies true redaction: the content is deleted from the PDF structure, then the result is automatically re-scanned to confirm nothing remains.",
+          "A black rectangle in most editors is an annotation layered on top of the text. The underlying text stays in the file and can be selected, copied or extracted with free tools. PlainFile applies true redaction: the content is deleted from the PDF structure, then the result is automatically re-scanned to confirm nothing remains.",
       },
       {
         question: "Can the recipient tell the statement was redacted?",

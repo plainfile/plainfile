@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <Layout>
       <SEO
-        title="QuietKit — Free Private Browser Tools"
+        title="PlainFile — Free Private Browser Tools"
         description="Free tools that run entirely in your browser. Redact PDFs, convert images, strip metadata — no uploads, no sign-ups, no tracking. Your files never leave your device."
         path="/"
         noSuffix

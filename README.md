@@ -1,23 +1,23 @@
-# QuietKit
+# PlainFile
 
 > Free browser tools for your files. No uploads. No sign-ups.
 
-**QuietKit** is a privacy-first collection of file-processing tools that run entirely in your browser using WebAssembly. Your files never leave your device.
+**PlainFile** is a privacy-first collection of file-processing tools that run entirely in your browser using WebAssembly. Your files never leave your device.
 
-**Live:** [quietkit.io](https://quietkit.io)
+**Live:** [plainfile.io](https://plainfile.io)
 
 ## Current tools
 
 | Tool | Status | What it does |
 |------|--------|-------------|
-| [PDF Redaction](https://quietkit.io/pdf/redact) | ✅ Ready | Permanently remove text, images and metadata from PDFs |
+| [PDF Redaction](https://plainfile.io/pdf/redact) | ✅ Ready | Permanently remove text, images and metadata from PDFs |
 | Redact Bank Statement | ✅ Ready | Remove account numbers, transactions, balances |
 | Redact SSN | ✅ Ready | Find and remove Social Security Numbers |
 | Redact Medical Records | ✅ Ready | Remove PHI (names, DOB, MRN, diagnoses) |
 
-## Why QuietKit is different
+## Why PlainFile is different
 
-Most "free" PDF tools upload your file to a server, process it, and send it back. QuietKit never does that.
+Most "free" PDF tools upload your file to a server, process it, and send it back. PlainFile never does that.
 
 - **Zero uploads** — All processing happens locally in your browser via WebAssembly (WASM)
 - **True redaction** — Not black boxes on top. Content is actually deleted from the PDF structure
@@ -63,7 +63,7 @@ AGPL-3.0. See [LICENSE](./LICENSE).
 
 ## Privacy
 
-See [quietkit.io/privacy](https://quietkit.io/privacy). In short: we don't see your files. Optional Google Analytics only with explicit cookie consent.
+See [plainfile.io/privacy](https://plainfile.io/privacy). In short: we don't see your files. Optional Google Analytics only with explicit cookie consent.
 
 ---
 

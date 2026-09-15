@@ -5,7 +5,7 @@ import { ROUTES } from '../src/routes-manifest.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = resolve(__dirname, '../dist');
-const DOMAIN = 'https://quietkit.io';
+const DOMAIN = 'https://plainfile.io';
 
 const today = new Date().toISOString().split('T')[0];
 
