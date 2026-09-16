@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { FileText, Landmark, UserRound, Stethoscope } from "lucide-react";
+import { FileText, FilePenLine, Landmark, UserRound, Stethoscope } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { Badge } from "@/components/ui/badge";
 import { SEO } from "@/components/SEO";
@@ -12,6 +12,14 @@ const tools = [
     path: "/pdf/redact",
     status: "ready",
     icon: FileText,
+  },
+  {
+    id: "pdf-fill",
+    name: "Fill PDF Forms",
+    description: "Fill PDF forms in your browser. Your data stays on your device.",
+    path: "/pdf/fill",
+    status: "ready",
+    icon: FilePenLine,
   },
   {
     id: "redact-bank-statement",
