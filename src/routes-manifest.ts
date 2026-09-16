@@ -12,6 +12,7 @@ const RedactLegalDocuments = lazy(() => import('./pages/scenarios/RedactLegalDoc
 const RedactForFoia = lazy(() => import('./pages/scenarios/RedactForFoia'));
 const HowToRedactPdfProperly = lazy(() => import('./pages/guides/HowToRedactPdfProperly'));
 const WhyBlackMarkerFails = lazy(() => import('./pages/guides/WhyBlackMarkerFails'));
+const PrivacyScanPdfAlternative = lazy(() => import('./pages/guides/PrivacyScanPdfAlternative'));
 
 export interface RouteManifestItem {
   path: string;
@@ -34,4 +35,5 @@ export const ROUTES: RouteManifestItem[] = [
   { path: '/pdf/redact-for-foia', label: 'Redact for FOIA', priority: 0.8, changefreq: 'weekly', element: RedactForFoia },
   { path: '/guides/how-to-redact-pdf-properly', label: 'How to Redact a PDF Properly', priority: 0.7, changefreq: 'monthly', element: HowToRedactPdfProperly },
   { path: '/guides/why-black-marker-redaction-fails', label: 'Why Black Marker Redaction Fails', priority: 0.6, changefreq: 'monthly', element: WhyBlackMarkerFails },
+  { path: '/compare/privacyscanpdf-alternative', label: 'PrivacyScanPDF Alternative', priority: 0.6, changefreq: 'monthly', element: PrivacyScanPdfAlternative },
 ];

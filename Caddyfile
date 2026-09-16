@@ -6,11 +6,15 @@
 # Prerendered pages are served as <route>/index.html (e.g. /srv/uuid/index.html).
 # Unknown routes fall back to /index.html for client-side React Router navigation.
 
-{$SITE_ADDRESS:localhost}
-
-root * /srv
-file_server {
-    index index.html
+www.{$SITE_ADDRESS:localhost} {
+    redir https://{$SITE_ADDRESS:localhost}{uri}
 }
 
-try_files {path} {path}/index.html /index.html
+
+{$SITE_ADDRESS:localhost} {
+    root * /srv
+    file_server {
+        index index.html
+    }
+    try_files {path} {path}/index.html /index.html
+}

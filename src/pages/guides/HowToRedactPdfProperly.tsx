@@ -329,6 +329,13 @@ export default function HowToRedactPdfProperly() {
             — the physical version of the same failure, and the only safe way to
             redact on paper.
           </p>
+          <p>
+            Comparing privacy-first PDF tools? See{" "}
+            <Link to="/compare/privacyscanpdf-alternative" className="text-[#0066CC] hover:underline">
+              PlainFile vs PrivacyScanPDF
+            </Link>{" "}
+            — an honest look at pricing, open source and verified redaction.
+          </p>
         </div>
 
         <div className="mt-12 rounded-xl border bg-card p-6 shadow-sm">

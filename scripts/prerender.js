@@ -7,7 +7,22 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.resolve(__dirname, '../dist');
 const PORT = 3456;
-const ROUTES = ['/', '/tools', '/privacy', '/pdf/redact', '/pdf/redact-bank-statement', '/pdf/redact-ssn', '/pdf/redact-medical-records'];
+// Keep in sync with src/routes-manifest.ts (all 13 routes).
+const ROUTES = [
+  '/',
+  '/tools',
+  '/privacy',
+  '/pdf/redact',
+  '/pdf/redact-bank-statement',
+  '/pdf/redact-ssn',
+  '/pdf/redact-medical-records',
+  '/pdf/redact-emails',
+  '/pdf/redact-legal-documents',
+  '/pdf/redact-for-foia',
+  '/guides/how-to-redact-pdf-properly',
+  '/guides/why-black-marker-redaction-fails',
+  '/compare/privacyscanpdf-alternative',
+];
 
 const MIME_TYPES = {
   '.html': 'text/html',
@@ -23,8 +38,24 @@ const MIME_TYPES = {
 
 /**
  * Start a minimal static file server for the dist folder.
+ * The SPA shell is read once into memory: route "/" overwrites
+ * dist/index.html with its prerendered output, and re-reading the shell
+ * from disk for later routes would compound duplicated head tags.
+ *
+ * The shell's static head tags (title/description/OG/Twitter/canonical)
+ * are stripped before serving: under React 19 react-helmet-async renders
+ * plain elements without its data-rh marker, so every route re-adds the
+ * full set via <SEO> at runtime. Keeping the static copies would produce
+ * duplicate titles and conflicting canonicals in the saved HTML.
  */
 async function serveStatic(root, port) {
+  const rawShell = await fs.readFile(path.join(root, 'index.html'), 'utf8');
+  const shellHtml = rawShell
+    .replace(/<title>[^<]*<\/title>/g, '')
+    .replace(/<meta name="description"[^>]*>/g, '')
+    .replace(/<meta property="og:[^"]*"[^>]*>/g, '')
+    .replace(/<meta name="twitter:[^"]*"[^>]*>/g, '')
+    .replace(/<link rel="canonical"[^>]*>/g, '');
   const server = createServer(async (req, res) => {
     const pathname = req.url.split('?')[0];
     const ext = path.extname(pathname);
@@ -44,16 +75,10 @@ async function serveStatic(root, port) {
       }
     }
 
-    // For HTML pages and SPA routes, always fall back to the root index.html
-    // so React Router can render the correct route during prerendering.
-    try {
-      const content = await fs.readFile(path.join(root, 'index.html'));
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(content);
-    } catch {
-      res.writeHead(404);
-      res.end('Not found');
-    }
+    // For HTML pages and SPA routes, always fall back to the in-memory
+    // shell so React Router can render the correct route during prerendering.
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(shellHtml);
   });
 
   await new Promise((resolve) => server.listen(port, resolve));
@@ -84,6 +109,25 @@ async function cleanupModulePreloadLinks(page) {
       .querySelectorAll('link[rel="modulepreload"]')
       .forEach((link) => link.remove());
   });
+}
+
+/**
+ * Verify that React actually rendered the SEO tags (via <SEO> + helmet)
+ * before saving the prerendered HTML. Without this guard a broken page
+ * would be saved with no title/canonical at all.
+ */
+async function assertSeoTagsPresent(page, route) {
+  const counts = await page.evaluate(() => ({
+    title: document.querySelectorAll('title').length,
+    canonical: document.querySelectorAll('link[rel="canonical"]').length,
+    description: document.querySelectorAll('meta[name="description"]').length,
+  }));
+  if (counts.title !== 1 || counts.canonical !== 1 || counts.description !== 1) {
+    throw new Error(
+      `Prerender of ${route} produced invalid head: ` + JSON.stringify(counts) +
+        ' (expected exactly one title, canonical and description).'
+    );
+  }
 }
 
 async function main() {
@@ -120,6 +164,7 @@ async function main() {
       }
       await cleanupInjectedGtagScripts(page);
       await cleanupModulePreloadLinks(page);
+      await assertSeoTagsPresent(page, route);
 
       const html = await page.content();
       const outputPath =
