@@ -186,6 +186,13 @@ export default function PrivacyScanPdfAlternative() {
             you want it done to a verifiable standard — free, open source, and
             with an automatic proof that the secrets are actually gone.
           </p>
+          <p>
+            Looking for forms instead?{" "}
+            <Link to="/forms" className="text-[#0066CC] hover:underline">
+              Fill PDF forms online
+            </Link>{" "}
+            — W-9, I-9, passport, Schengen and more — free, no sign-up, no upload.
+          </p>
         </div>
 
         <div className="mt-12 rounded-xl border bg-card p-6 shadow-sm">

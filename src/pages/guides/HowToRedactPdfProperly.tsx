@@ -322,6 +322,13 @@ export default function HowToRedactPdfProperly() {
             then verify like an attacker would. Only then send.
           </p>
           <p>
+            Need to fill a form instead of redacting one?{" "}
+            <Link to="/forms" className="text-[#0066CC] hover:underline">
+              Fill PDF forms online
+            </Link>{" "}
+            — W-9, I-9, DS-11, DS-82, W-4, Schengen and more — free, no sign-up, no upload.
+          </p>
+          <p>
             Working with paper printouts too? Read{" "}
             <Link to="/guides/why-black-marker-redaction-fails" className="text-[#0066CC] hover:underline">
               why black marker redaction doesn't work

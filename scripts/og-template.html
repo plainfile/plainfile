@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1200, height=630">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1200px; height: 630px; overflow: hidden; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px;
+      position: relative;
+    }
+    .accent {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle at top right, rgba(0, 102, 204, 0.18), transparent 70%);
+      pointer-events: none;
+    }
+    .brand {
+      position: absolute;
+      top: 56px;
+      left: 80px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: #a3a3a3;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .brand svg { width: 28px; height: 28px; color: #0066CC; }
+    h1 {
+      font-size: 64px;
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 28px;
+      max-width: 1000px;
+    }
+    p {
+      font-size: 28px;
+      line-height: 1.4;
+      color: #d4d4d4;
+      max-width: 940px;
+    }
+    .tagline {
+      position: absolute;
+      bottom: 52px;
+      left: 80px;
+      font-size: 18px;
+      color: #737373;
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+  <div class="accent"></div>
+  <div class="brand">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="6.5" y="3.5" width="11" height="17" rx="2" />
+      <rect x="9.2" y="10.8" width="5.6" height="2.4" rx="0.6" fill="currentColor" stroke="none" />
+    </svg>
+    <span>PlainFile</span>
+  </div>
+  <h1 id="title">Title</h1>
+  <p id="desc">Description</p>
+  <div class="tagline">Free. No uploads. No sign-ups. No tracking.</div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const title = params.get('title') || 'PlainFile';
+    const desc = params.get('desc') || 'Free browser tools for your files.';
+    document.getElementById('title').textContent = title;
+    document.getElementById('desc').textContent = desc;
+  </script>
+</body>
+</html>

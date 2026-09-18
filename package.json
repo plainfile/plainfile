@@ -9,13 +9,14 @@
     "postbuild": "npm run sitemap",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prerender": "node scripts/prerender.js",
+    "prerender": "tsx scripts/prerender.js",
+    "og-images": "node scripts/generate-og-images.mjs",
     "sitemap": "tsx scripts/generate-sitemap.mjs",
     "fixtures": "node scripts/make-fixtures.mjs",
     "verify": "node verify.mjs",
     "test": "node verify.mjs",
     "check:live": "node scripts/check-live.mjs",
-    "predeploy": "npm run build ; npm run postbuild; PUPPETEER_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run prerender",
+    "predeploy": "npm run build ; npm run postbuild; npm run prerender",
     "deploy": "npm run predeploy; npx wrangler pages deploy ./dist --project-name=plainfile"
   },
   "dependencies": {

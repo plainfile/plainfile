@@ -1,28 +1,15 @@
 import { createServer } from 'http';
 import { promises as fs } from 'fs';
 import path from 'path';
-import puppeteer from 'puppeteer';
+import { chromium } from 'playwright';
 import { fileURLToPath } from 'url';
+import { ROUTES as ROUTE_MANIFEST } from '../src/routes-manifest.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = path.resolve(__dirname, '../dist');
 const PORT = 3456;
-// Keep in sync with src/routes-manifest.ts (all 13 routes).
-const ROUTES = [
-  '/',
-  '/tools',
-  '/privacy',
-  '/pdf/redact',
-  '/pdf/redact-bank-statement',
-  '/pdf/redact-ssn',
-  '/pdf/redact-medical-records',
-  '/pdf/redact-emails',
-  '/pdf/redact-legal-documents',
-  '/pdf/redact-for-foia',
-  '/guides/how-to-redact-pdf-properly',
-  '/guides/why-black-marker-redaction-fails',
-  '/compare/privacyscanpdf-alternative',
-];
+// Source of truth for routes is src/routes-manifest.ts (currently 21 URLs).
+const ROUTES = ROUTE_MANIFEST.map((route) => route.path);
 
 const MIME_TYPES = {
   '.html': 'text/html',
@@ -145,17 +132,14 @@ async function main() {
 
   const server = await serveStatic(DIST_DIR, PORT);
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
+  const browser = await chromium.launch({ headless: true });
 
   try {
     const page = await browser.newPage();
 
     for (const route of ROUTES) {
       const url = `http://localhost:${PORT}${route}`;
-      const response = await page.goto(url, { waitUntil: 'networkidle2' });
+      const response = await page.goto(url, { waitUntil: 'networkidle' });
       if (!response || response.status() >= 400) {
         throw new Error(
           `Prerender of ${route} failed with HTTP ${response ? response.status() : 'no response'}.` +

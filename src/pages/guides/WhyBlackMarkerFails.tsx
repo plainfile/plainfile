@@ -196,6 +196,13 @@ export default function WhyBlackMarkerFails() {
             not covered.
           </p>
           <p>
+            Need to fill a PDF form instead?{" "}
+            <Link to="/forms" className="text-[#0066CC] hover:underline">
+              Fill government forms online
+            </Link>{" "}
+            — W-9, I-9, passport, Schengen and more — free, no sign-up, no upload.
+          </p>
+          <p>
             <strong>For paper:</strong> if you must redact physically, don't mark
             — remove. Cut the section out, or cover it and photocopy the page
             (then destroy the marked original; the copy contains no hidden layer).

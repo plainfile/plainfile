@@ -11,6 +11,7 @@ import {
   Scale,
   FileSearch,
   BookOpen,
+  FileText,
 } from "lucide-react";
 import { SCENARIOS } from "@/lib/scenarios";
 
@@ -61,6 +62,27 @@ export default function RedactPdf() {
       />
 
       <RedactTool />
+
+      <section className="mt-16 border-t pt-10">
+        <h2 className="mb-6 text-2xl font-bold tracking-tight">
+          Need to fill a PDF form?
+        </h2>
+        <Link
+          to="/pdf/fill"
+          className="group flex items-start gap-4 rounded-xl border bg-card p-6 shadow-sm transition-colors hover:border-[#0066CC]/30"
+        >
+          <FileText className="mt-1 h-8 w-8 shrink-0 text-[#0066CC]" />
+          <div>
+            <h3 className="mb-2 text-lg font-semibold group-hover:text-[#0066CC]">
+              Fill PDF forms online — free, no sign up
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Type directly into AcroForm fields and download the completed PDF.
+              Your data never leaves your device.
+            </p>
+          </div>
+        </Link>
+      </section>
 
       <section className="mt-16 border-t pt-10">
         <h2 className="mb-6 text-2xl font-bold tracking-tight">

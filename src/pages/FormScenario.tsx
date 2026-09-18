@@ -3,8 +3,19 @@ import { useLocation, Link } from 'react-router';
 import { Layout } from '@/components/Layout';
 import { SEO } from '@/components/SEO';
 import { FormTool } from '@/components/FormTool';
-import { getFormByPath } from '@/lib/forms';
+import { getFormByPath, type FormStep } from '@/lib/forms';
 import { Loader2, ExternalLink, AlertTriangle } from 'lucide-react';
+
+function parseStepsHtml(stepsHtml: string): FormStep[] {
+  if (typeof document === 'undefined') return [];
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(stepsHtml, 'text/html');
+  const items = Array.from(doc.querySelectorAll('li'));
+  return items.map((li, idx) => ({
+    title: `Step ${idx + 1}`,
+    text: li.textContent?.trim() ?? '',
+  }));
+}
 
 export default function FormScenario() {
   const location = useLocation();
@@ -79,13 +90,28 @@ export default function FormScenario() {
     })),
   };
 
+  const howToSteps = form.steps && form.steps.length > 0 ? form.steps : parseStepsHtml(form.stepsHtml);
+  const howToLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to fill ${form.label}`,
+    description: form.description,
+    step: howToSteps.map((step, idx) => ({
+      '@type': 'HowToStep',
+      position: idx + 1,
+      name: step.title,
+      text: step.text,
+    })),
+  };
+
   return (
     <Layout>
       <SEO
         title={form.pageTitle}
         description={form.pageDescription}
         path={form.path}
-        jsonLd={[softwareApplicationLd, faqLd]}
+        ogImage={`/og/${form.id}.png`}
+        jsonLd={[softwareApplicationLd, faqLd, howToLd]}
       />
 
       <section className="mb-8">
@@ -144,6 +170,12 @@ export default function FormScenario() {
           </p>
           <p className="mt-2 text-muted-foreground">
             This tool is for convenience only and is not legal or tax advice. Review the official instructions before filing.
+          </p>
+          <p className="mt-3 text-sm text-muted-foreground">
+            <Link to="/pdf/redact" className="text-[#0066CC] hover:underline">
+              Need to hide sensitive data before sharing?
+            </Link>{" "}
+            Redact the filled PDF first — permanently remove text, images and metadata in your browser.
           </p>
         </div>
       </section>

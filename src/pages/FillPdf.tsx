@@ -21,9 +21,10 @@ export default function FillPdf() {
   return (
     <Layout>
       <SEO
-        title="Fill PDF Forms Online — Free, No Upload, No Sign Up"
-        description="Fill PDF forms right in your browser. All data stays on your device; nothing is uploaded."
+        title="Fill PDF Form Online Free — No Sign Up, No Upload"
+        description="Fill any PDF form online for free. No sign-up, no upload — type, fill and download completed forms right in your browser."
         path="/pdf/fill"
+        ogImage="/og/fill.png"
         jsonLd={[softwareApplicationLd]}
       />
 
@@ -39,7 +40,7 @@ export default function FillPdf() {
         >
           <div>
             <h3 className="mb-2 text-lg font-semibold group-hover:text-[#0066CC]">
-              Need to hide sensitive information before sending the filled form?
+              Need to hide sensitive data before sharing?
             </h3>
             <p className="text-sm text-muted-foreground">
               Redact your PDF first — permanently remove text, images and

@@ -11,7 +11,7 @@ export default function FormsHub() {
     name: "PlainFile PDF Form Filler",
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Any (browser)",
-    url: "https://plainfile.io/pdf/forms",
+    url: "https://plainfile.io/forms",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     description:
       "Fill government and PDF forms in your browser. Your data never leaves your device.",
@@ -22,9 +22,10 @@ export default function FormsHub() {
   return (
     <Layout>
       <SEO
-        title="Fill Government Forms Online — Free, No Upload"
-        description="Pick a government form and fill it in your browser. Your data stays on your device; nothing is uploaded."
-        path="/pdf/forms"
+        title="Fill Government Forms Online — Free, No Upload, No Sign Up"
+        description="Browse and fill government forms online for free. W-9, I-9, DS-11, DS-82, W-4, Schengen visa and more — no sign-up, no upload."
+        path="/forms"
+        ogImage="/og/forms.png"
         jsonLd={[softwareApplicationLd]}
       />
 
