@@ -1,11 +1,14 @@
 /**
- * D3 e2e smoke test for flat PDF text overlay + signature.
+ * D7 Phase 2 e2e test for /pdf/fill with a flat PDF.
  * Starts the dev server, opens /pdf/fill, uploads flat.pdf, places a text
- * overlay, creates a typed signature, fills, and verifies a download occurs.
+ * overlay, creates a typed signature, fills, downloads the resulting PDF,
+ * and verifies it is a non-empty valid PDF using pdf-lib.
  */
 import { chromium } from "playwright";
 import { spawn } from "node:child_process";
 import path from "node:path";
+import fs from "node:fs";
+import os from "node:os";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -97,18 +100,45 @@ async function main() {
     await page.waitForSelector('img[alt="Signature"]', { timeout: 10000 });
 
     // Fill and download.
+    const downloadDir = fs.mkdtempSync(path.join(os.tmpdir(), "flat-e2e-"));
     const [download] = await Promise.all([
       page.waitForEvent("download", { timeout: 30000 }),
       page.locator('button:has-text("Fill and download PDF")').click(),
     ]);
 
-    const downloadPath = await download.path();
-    if (!downloadPath) {
-      throw new Error("Download did not complete");
+    const suggestedName = download.suggestedFilename();
+    const downloadPath = path.join(downloadDir, suggestedName || "flat-filled.pdf");
+    await download.saveAs(downloadPath);
+
+    if (!fs.existsSync(downloadPath)) {
+      throw new Error("Downloaded file was not saved");
+    }
+
+    const stats = fs.statSync(downloadPath);
+    if (stats.size === 0) {
+      throw new Error("Downloaded file is empty");
     }
     downloaded = true;
+    console.log(`Downloaded ${path.basename(downloadPath)} (${stats.size} bytes)`);
+
+    // Verify the downloaded file is a valid PDF using pdf-lib.
+    const { PDFDocument } = await import("pdf-lib");
+    const pdfBytes = fs.readFileSync(downloadPath);
+    const doc = await PDFDocument.load(pdfBytes);
+    const pageCount = doc.getPageCount();
+    if (pageCount === 0) {
+      throw new Error("Downloaded PDF has no pages");
+    }
+    console.log(`Verified valid PDF with ${pageCount} page(s)`);
 
     await browser.close();
+
+    // Clean up the temporary download directory.
+    try {
+      fs.rmSync(downloadDir, { recursive: true, force: true });
+    } catch {
+      // ignore cleanup errors
+    }
 
     if (errors.length > 0) {
       console.warn("Console/page errors during test:", errors);

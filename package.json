@@ -14,6 +14,7 @@
     "sitemap": "tsx scripts/generate-sitemap.mjs",
     "fixtures": "node scripts/make-fixtures.mjs",
     "verify": "node verify.mjs",
+    "verify:forms": "node verify-forms.mjs",
     "test": "node verify.mjs",
     "check:live": "node scripts/check-live.mjs",
     "predeploy": "npm run build ; npm run postbuild; npm run prerender",
