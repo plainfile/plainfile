@@ -6,7 +6,10 @@ import {
   FileUp,
   Loader2,
   MousePointer2,
+  Pencil,
   Shield,
+  Trash2,
+  Type,
 } from "lucide-react";
 import type {
   PageInfo,
@@ -18,6 +21,8 @@ import type {
   FillWorkerResponse,
   FormFieldInfo,
   PageSize,
+  SignaturePlacement,
+  TextOverlay,
 } from "@/lib/fill-engine";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,9 +31,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { FieldOverlay } from "./FieldOverlay";
+import { SignaturePad } from "./SignaturePad";
 
 const RENDER_DPI = 144;
+const SCALE = RENDER_DPI / 72;
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
+const DEFAULT_SIGNATURE_WIDTH = 150;
+const DEFAULT_SIGNATURE_HEIGHT = 60;
+const DEFAULT_OVERLAY_FONT_SIZE = 14;
 
 function createRedactWorker(): Promise<Worker> {
   return new Promise((resolve, reject) => {
@@ -109,7 +119,7 @@ export interface FormToolProps {
   initialPdf?: { bytes: ArrayBuffer; fileName: string };
 }
 
-export function FormTool({ title, description }: FormToolProps) {
+export function FormTool({ title, description, initialPdf }: FormToolProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const pageBitmapRef = useRef<ImageBitmap | null>(null);
@@ -128,6 +138,12 @@ export function FormTool({ title, description }: FormToolProps) {
   const [progress, setProgress] = useState(0);
   const [outputBytes, setOutputBytes] = useState<Uint8Array | null>(null);
   const [zoom, setZoom] = useState(1);
+
+  const [activeTool, setActiveTool] = useState<"form" | "text" | "signature">("form");
+  const [textOverlays, setTextOverlays] = useState<TextOverlay[]>([]);
+  const [editingOverlayId, setEditingOverlayId] = useState<number | null>(null);
+  const [signature, setSignature] = useState<SignaturePlacement | null>(null);
+  const [signatureOpen, setSignatureOpen] = useState(false);
 
   useEffect(() => {
     redactWorkerPromiseRef.current = createRedactWorker();
@@ -160,6 +176,24 @@ export function FormTool({ title, description }: FormToolProps) {
     if (!canvas || !size) return;
     setZoom(canvas.clientWidth / size.width);
   }, [pageSizes, currentPage]);
+
+  const canvasToPdfPoint = useCallback(
+    (clientX: number, clientY: number) => {
+      const canvas = canvasRef.current;
+      const size = pageSizes[currentPage];
+      if (!canvas || !size) return { x: 0, y: 0 };
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const px = (clientX - rect.left) * scaleX;
+      const py = (clientY - rect.top) * scaleY;
+      return {
+        x: px / SCALE,
+        y: py / SCALE,
+      };
+    },
+    [pageSizes, currentPage],
+  );
 
   useEffect(() => {
     measureZoom();
@@ -273,6 +307,19 @@ export function FormTool({ title, description }: FormToolProps) {
     [ensureRedactWorker, ensureFillWorker, renderPage],
   );
 
+  const initialLoadStartedRef = useRef(false);
+
+  useEffect(() => {
+    // Auto-load the provided template once. Guard against re-runs caused by
+    // loadFile reference changes during the initial load sequence.
+    if (!initialPdf || initialLoadStartedRef.current) return;
+    initialLoadStartedRef.current = true;
+    const syntheticFile = new File([initialPdf.bytes], initialPdf.fileName, {
+      type: "application/pdf",
+    });
+    void loadFile(syntheticFile);
+  }, [initialPdf, loadFile]);
+
   const handleDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
@@ -295,6 +342,56 @@ export function FormTool({ title, description }: FormToolProps) {
       setValues((prev) => ({ ...prev, [name]: value }));
     },
     [],
+  );
+
+  const handleCanvasClick = useCallback(
+    (event: React.MouseEvent<HTMLCanvasElement>) => {
+      if (activeTool !== "text" || !pageSizes[currentPage]) return;
+      const point = canvasToPdfPoint(event.clientX, event.clientY);
+      let newIndex = 0;
+      setTextOverlays((prev) => {
+        newIndex = prev.length;
+        const newOverlay: TextOverlay = {
+          page: currentPage,
+          x: point.x,
+          y: point.y,
+          text: "",
+          fontSize: DEFAULT_OVERLAY_FONT_SIZE,
+        };
+        return [...prev, newOverlay];
+      });
+      setEditingOverlayId(newIndex);
+      setActiveTool("form");
+    },
+    [activeTool, canvasToPdfPoint, currentPage, pageSizes],
+  );
+
+  const updateOverlayText = useCallback((index: number, text: string) => {
+    setTextOverlays((prev) =>
+      prev.map((overlay, idx) => (idx === index ? { ...overlay, text } : overlay)),
+    );
+  }, []);
+
+  const deleteOverlay = useCallback((index: number) => {
+    setTextOverlays((prev) => prev.filter((_, idx) => idx !== index));
+    setEditingOverlayId((prev) => (prev === index ? null : prev));
+  }, []);
+
+  const handleSignature = useCallback(
+    (pngBytes: Uint8Array) => {
+      const size = pageSizes[currentPage];
+      if (!size) return;
+      setSignature({
+        page: currentPage,
+        x: size.width / 2 - DEFAULT_SIGNATURE_WIDTH / 2,
+        y: size.height / 2 - DEFAULT_SIGNATURE_HEIGHT / 2,
+        width: DEFAULT_SIGNATURE_WIDTH,
+        height: DEFAULT_SIGNATURE_HEIGHT,
+        pngBytes,
+      });
+      setActiveTool("form");
+    },
+    [currentPage, pageSizes],
   );
 
   const downloadFile = useCallback((bytes: Uint8Array, name: string | null) => {
@@ -322,8 +419,8 @@ export function FormTool({ title, description }: FormToolProps) {
         op: "fill",
         bytes: originalBytesRef.current,
         values,
-        overlays: [],
-        signature: undefined,
+        overlays: textOverlays,
+        signature: signature ?? undefined,
         flatten: true,
       });
       if (response.op !== "fill") {
@@ -338,7 +435,7 @@ export function FormTool({ title, description }: FormToolProps) {
       setLoading(false);
       setError(err instanceof Error ? err.message : String(err));
     }
-  }, [values, fileName, ensureFillWorker, downloadFile]);
+  }, [values, textOverlays, signature, fileName, ensureFillWorker, downloadFile]);
 
   const handleDownload = useCallback(() => {
     if (!outputBytes || !fileName) return;
@@ -372,9 +469,15 @@ export function FormTool({ title, description }: FormToolProps) {
         >
           <FileUp className="h-10 w-10 text-muted-foreground" />
           <div>
-            <p className="font-medium">Drop a PDF here or click to upload</p>
+            <p className="font-medium">
+              {initialPdf
+                ? `Template loaded: ${initialPdf.fileName}`
+                : "Drop a PDF here or click to upload"}
+            </p>
             <p className="text-sm text-muted-foreground">
-              Files stay on your device. Max 50 MB.
+              {initialPdf
+                ? "Drop a different PDF below to replace the template."
+                : "Files stay on your device. Max 50 MB."}
             </p>
           </div>
           <input
@@ -424,7 +527,11 @@ export function FormTool({ title, description }: FormToolProps) {
             </div>
 
             <div className="relative overflow-auto rounded-lg border bg-white p-2 shadow-sm dark:bg-black">
-              <canvas ref={canvasRef} className="max-w-full" />
+              <canvas
+                ref={canvasRef}
+                className={`max-w-full ${activeTool === "text" ? "cursor-crosshair" : ""}`}
+                onClick={handleCanvasClick}
+              />
               {fields.length > 0 && currentPageSize && (
                 <FieldOverlay
                   fields={fields}
@@ -434,11 +541,27 @@ export function FormTool({ title, description }: FormToolProps) {
                   onChange={handleValueChange}
                 />
               )}
+              {currentPageSize && (
+                <OverlayLayer
+                  textOverlays={textOverlays}
+                  signature={signature}
+                  page={currentPage}
+                  zoom={zoom}
+                  editingId={editingOverlayId}
+                  onEdit={setEditingOverlayId}
+                  onChangeText={updateOverlayText}
+                  onDelete={deleteOverlay}
+                  onMoveSignature={(x, y) =>
+                    setSignature((prev) => (prev ? { ...prev, x, y } : prev))
+                  }
+                />
+              )}
             </div>
 
             <p className="text-xs text-muted-foreground">
-              Edit fields directly on the page or use the sidebar. When you are
-              ready, click Fill and download PDF.
+              {activeTool === "text"
+                ? "Click on the page where you want to add text."
+                : "Edit fields directly on the page or use the sidebar. Add text or a signature from the sidebar."}
             </p>
           </div>
 
@@ -446,8 +569,39 @@ export function FormTool({ title, description }: FormToolProps) {
             <div className="rounded-xl border bg-card p-4 shadow-sm">
               <div className="mb-3 flex items-center gap-2">
                 <MousePointer2 className="h-4 w-4" />
-                <h3 className="font-semibold">Form fields</h3>
+                <h3 className="font-semibold">Tools</h3>
               </div>
+              <div className="mb-4 grid grid-cols-3 gap-2">
+                <Button
+                  variant={activeTool === "form" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setActiveTool("form")}
+                  aria-pressed={activeTool === "form"}
+                >
+                  <MousePointer2 className="mr-1 h-3 w-3" />
+                  Form
+                </Button>
+                <Button
+                  variant={activeTool === "text" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setActiveTool("text")}
+                  aria-pressed={activeTool === "text"}
+                >
+                  <Type className="mr-1 h-3 w-3" />
+                  Text
+                </Button>
+                <Button
+                  variant={activeTool === "signature" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSignatureOpen(true)}
+                  aria-pressed={activeTool === "signature"}
+                >
+                  <Pencil className="mr-1 h-3 w-3" />
+                  Sign
+                </Button>
+              </div>
+
+              <h4 className="mb-2 text-sm font-semibold">Form fields</h4>
               {fields.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
                   No AcroForm fields found. You can still fill flat PDFs once
@@ -481,6 +635,49 @@ export function FormTool({ title, description }: FormToolProps) {
               )}
             </div>
 
+            {(textOverlays.length > 0 || signature) && (
+              <div className="rounded-xl border bg-card p-4 shadow-sm">
+                <h4 className="mb-2 text-sm font-semibold">Overlays</h4>
+                {textOverlays.length > 0 && (
+                  <ul className="mb-3 max-h-[30vh] space-y-2 overflow-auto">
+                    {textOverlays.map((overlay, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-center justify-between gap-2 rounded-md border px-2 py-1 text-sm"
+                      >
+                        <span className="truncate">
+                          {overlay.text || `(text ${idx + 1})`}
+                        </span>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 shrink-0"
+                          onClick={() => deleteOverlay(idx)}
+                          aria-label={`Delete text overlay ${idx + 1}`}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {signature && (
+                  <div className="flex items-center justify-between gap-2 rounded-md border px-2 py-1 text-sm">
+                    <span>Signature</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6 shrink-0"
+                      onClick={() => setSignature(null)}
+                      aria-label="Delete signature"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="space-y-3">
               <Progress
                 value={progress}
@@ -488,7 +685,10 @@ export function FormTool({ title, description }: FormToolProps) {
               />
               <Button
                 className="w-full"
-                disabled={loading || fields.length === 0}
+                disabled={
+                  loading ||
+                  (fields.length === 0 && textOverlays.length === 0 && !signature)
+                }
                 onClick={() => void handleFill()}
               >
                 {loading ? (
@@ -517,6 +717,12 @@ export function FormTool({ title, description }: FormToolProps) {
           </div>
         </div>
       )}
+
+      <SignaturePad
+        open={signatureOpen}
+        onOpenChange={setSignatureOpen}
+        onSignature={handleSignature}
+      />
 
       {error && (
         <div className="mt-4 rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-sm text-destructive">
@@ -582,4 +788,165 @@ function renderSideInput(
     default:
       return null;
   }
+}
+
+interface OverlayLayerProps {
+  textOverlays: TextOverlay[];
+  signature: SignaturePlacement | null;
+  page: number;
+  zoom: number;
+  editingId: number | null;
+  onEdit: (id: number | null) => void;
+  onChangeText: (index: number, text: string) => void;
+  onDelete: (index: number) => void;
+  onMoveSignature: (x: number, y: number) => void;
+}
+
+function OverlayLayer({
+  textOverlays,
+  signature,
+  page,
+  zoom,
+  editingId,
+  onEdit,
+  onChangeText,
+  onDelete,
+  onMoveSignature,
+}: OverlayLayerProps): React.ReactNode {
+  const pageOverlays = textOverlays.filter((o) => o.page === page);
+
+  return (
+    <>
+      {pageOverlays.map((overlay, globalIndex) => {
+        const isEditing = editingId === globalIndex;
+        return (
+          <div
+            key={globalIndex}
+            className="absolute"
+            style={{
+              left: overlay.x * zoom,
+              top: overlay.y * zoom,
+              minWidth: 44,
+              minHeight: 44,
+            }}
+          >
+            {isEditing ? (
+              <Input
+                autoFocus
+                value={overlay.text}
+                onChange={(event) => onChangeText(globalIndex, event.target.value)}
+                onBlur={() => {
+                  if (!overlay.text.trim()) {
+                    onDelete(globalIndex);
+                  }
+                  onEdit(null);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    if (!overlay.text.trim()) {
+                      onDelete(globalIndex);
+                    }
+                    onEdit(null);
+                  }
+                }}
+                className="h-auto border-[#0066CC] bg-white/95 px-1 py-0 text-sm shadow-sm dark:bg-black/95"
+                style={{ fontSize: overlay.fontSize * zoom }}
+              />
+            ) : (
+              <div
+                onClick={() => onEdit(globalIndex)}
+                className="cursor-pointer whitespace-nowrap bg-white/90 px-1 py-0.5 text-sm shadow-sm hover:bg-white dark:bg-black/90 dark:hover:bg-black"
+                style={{ fontSize: overlay.fontSize * zoom }}
+              >
+                {overlay.text}
+              </div>
+            )}
+          </div>
+        );
+      })}
+      {signature && signature.page === page && (
+        <DraggableSignature
+          signature={signature}
+          zoom={zoom}
+          onMove={onMoveSignature}
+        />
+      )}
+    </>
+  );
+}
+
+interface DraggableSignatureProps {
+  signature: SignaturePlacement;
+  zoom: number;
+  onMove: (x: number, y: number) => void;
+}
+
+function DraggableSignature({
+  signature,
+  zoom,
+  onMove,
+}: DraggableSignatureProps): React.ReactNode {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const startRef = useRef<{ x: number; y: number; sigX: number; sigY: number } | null>(null);
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const container = containerRef.current;
+    if (!container) return;
+    container.setPointerCapture(event.pointerId);
+    startRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+      sigX: signature.x,
+      sigY: signature.y,
+    };
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!startRef.current) return;
+    event.preventDefault();
+    const deltaX = (event.clientX - startRef.current.x) / zoom;
+    const deltaY = (event.clientY - startRef.current.y) / zoom;
+    onMove(startRef.current.sigX + deltaX, startRef.current.sigY + deltaY);
+  };
+
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    const container = containerRef.current;
+    if (container) {
+      try {
+        container.releasePointerCapture(event.pointerId);
+      } catch {
+        // ignore
+      }
+    }
+    startRef.current = null;
+  };
+
+  const url = URL.createObjectURL(
+    new Blob([signature.pngBytes.buffer as ArrayBuffer], { type: "image/png" }),
+  );
+
+  return (
+    <div
+      ref={containerRef}
+      className="absolute cursor-move touch-none"
+      style={{
+        left: signature.x * zoom,
+        top: signature.y * zoom,
+        width: signature.width * zoom,
+        height: signature.height * zoom,
+      }}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
+    >
+      <img
+        src={url}
+        alt="Signature"
+        className="pointer-events-none h-full w-full object-contain"
+        onLoad={() => URL.revokeObjectURL(url)}
+      />
+    </div>
+  );
 }

@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { FileText, FilePenLine, Landmark, UserRound, Stethoscope } from "lucide-react";
+import { FileText, FilePenLine, Files, Landmark, UserRound, Stethoscope } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { Badge } from "@/components/ui/badge";
 import { SEO } from "@/components/SEO";
@@ -20,6 +20,14 @@ const tools = [
     path: "/pdf/fill",
     status: "ready",
     icon: FilePenLine,
+  },
+  {
+    id: "forms-hub",
+    name: "Government Forms",
+    description: "Fill W-9, I-9 and other government forms with embedded templates.",
+    path: "/forms",
+    status: "ready",
+    icon: Files,
   },
   {
     id: "redact-bank-statement",

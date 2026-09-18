@@ -12,6 +12,9 @@ import type {
   PDFOptionList,
   PDFRadioGroup,
   PDFTextField,
+  PDFPage,
+  PDFImage,
+  PDFFont,
 } from "pdf-lib";
 
 function mapFieldType(typeName: string): FieldType | null {
@@ -43,6 +46,15 @@ function pdfRectToUi(
 ): { x: number; y: number; width: number; height: number } {
   const yUi = pageHeight - rect.y - rect.height;
   return { x: rect.x, y: yUi, width: rect.width, height: rect.height };
+}
+
+function validateWinAnsi(text: string, label: string): string | null {
+  for (const char of text) {
+    if (char.charCodeAt(0) > 255) {
+      return `${label} contains characters that cannot be encoded in this PDF yet.`;
+    }
+  }
+  return null;
 }
 
 async function handleInspect(id: number, bytes: Uint8Array): Promise<FillWorkerResponse> {
@@ -129,8 +141,8 @@ async function handleInspect(id: number, bytes: Uint8Array): Promise<FillWorkerR
 }
 
 async function handleFill(request: Extract<FillWorkerRequest, { op: "fill" }>): Promise<FillWorkerResponse> {
-  const { id, bytes, values, overlays, flatten } = request;
-  const { PDFDocument, PDFName } = await import("pdf-lib");
+  const { id, bytes, values, overlays, signature, flatten } = request;
+  const { PDFDocument, PDFName, StandardFonts } = await import("pdf-lib");
   const doc = await PDFDocument.load(bytes);
   const form = doc.getForm();
 
@@ -171,18 +183,62 @@ async function handleFill(request: Extract<FillWorkerRequest, { op: "fill" }>): 
     }
   }
 
-  // Validate WinAnsi before save.
+  // Validate WinAnsi for AcroForm text values.
   for (const [name, value] of Object.entries(values)) {
     if (typeof value !== "string") continue;
-    for (const char of value) {
-      if (char.charCodeAt(0) > 255) {
-        return {
-          id,
-          ok: false,
-          error: `Field "${name}" contains characters that cannot be encoded in this PDF yet.`,
-        };
-      }
+    const error = validateWinAnsi(value, `Field "${name}"`);
+    if (error) {
+      return { id, ok: false, error };
     }
+  }
+
+  // Validate WinAnsi for overlay text before drawing.
+  for (const overlay of overlays) {
+    const error = validateWinAnsi(overlay.text, "Overlay text");
+    if (error) {
+      return { id, ok: false, error };
+    }
+  }
+
+  // Draw overlays and signature before flattening.
+  try {
+    const helvetica: PDFFont = await doc.embedFont(StandardFonts.Helvetica);
+
+    for (const overlay of overlays) {
+      const pages = doc.getPages();
+      if (overlay.page < 0 || overlay.page >= pages.length) {
+        throw new Error(`Overlay page index ${overlay.page} is out of range`);
+      }
+      const page: PDFPage = pages[overlay.page];
+      const pageHeight = page.getHeight();
+      const pdfY = pageHeight - overlay.y - overlay.fontSize;
+      page.drawText(overlay.text, {
+        x: overlay.x,
+        y: pdfY,
+        size: overlay.fontSize,
+        font: helvetica,
+      });
+    }
+
+    if (signature) {
+      const pngImage: PDFImage = await doc.embedPng(signature.pngBytes);
+      const pages = doc.getPages();
+      if (signature.page < 0 || signature.page >= pages.length) {
+        throw new Error(`Signature page index ${signature.page} is out of range`);
+      }
+      const page: PDFPage = pages[signature.page];
+      const pageHeight = page.getHeight();
+      const pdfY = pageHeight - signature.y - signature.height;
+      page.drawImage(pngImage, {
+        x: signature.x,
+        y: pdfY,
+        width: signature.width,
+        height: signature.height,
+      });
+    }
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    return { id, ok: false, error: message };
   }
 
   if (flatten) {

@@ -5,6 +5,8 @@ const Tools = lazy(() => import('./pages/Tools'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const RedactPdf = lazy(() => import('./pages/RedactPdf'));
 const FillPdf = lazy(() => import('./pages/FillPdf'));
+const FormsHub = lazy(() => import('./pages/FormsHub'));
+const FormScenario = lazy(() => import('./pages/FormScenario'));
 const RedactBankStatement = lazy(() => import('./pages/scenarios/RedactBankStatement'));
 const RedactSsn = lazy(() => import('./pages/scenarios/RedactSsn'));
 const RedactMedicalRecords = lazy(() => import('./pages/scenarios/RedactMedicalRecords'));
@@ -29,6 +31,13 @@ export const ROUTES: RouteManifestItem[] = [
   { path: '/privacy', label: 'Privacy', priority: 0.4, changefreq: 'monthly', element: Privacy },
   { path: '/pdf/redact', label: 'Redact PDF', priority: 0.9, changefreq: 'weekly', element: RedactPdf },
   { path: '/pdf/fill', label: 'Fill PDF', priority: 0.9, changefreq: 'weekly', element: FillPdf },
+  { path: '/forms', label: 'Forms Hub', priority: 0.9, changefreq: 'weekly', element: FormsHub },
+  { path: '/forms/w-9', label: 'Fill W-9', priority: 0.9, changefreq: 'weekly', element: FormScenario },
+  { path: '/forms/i-9', label: 'Fill I-9', priority: 0.9, changefreq: 'weekly', element: FormScenario },
+  { path: '/forms/ds-11', label: 'Fill DS-11', priority: 0.9, changefreq: 'weekly', element: FormScenario },
+  { path: '/forms/ds-82', label: 'Fill DS-82', priority: 0.9, changefreq: 'weekly', element: FormScenario },
+  { path: '/forms/w-4', label: 'Fill W-4', priority: 0.9, changefreq: 'weekly', element: FormScenario },
+  { path: '/forms/schengen', label: 'Fill Schengen Visa', priority: 0.9, changefreq: 'weekly', element: FormScenario },
   { path: '/pdf/redact-bank-statement', label: 'Redact Bank Statement', priority: 0.8, changefreq: 'weekly', element: RedactBankStatement },
   { path: '/pdf/redact-ssn', label: 'Redact SSN', priority: 0.8, changefreq: 'weekly', element: RedactSsn },
   { path: '/pdf/redact-medical-records', label: 'Redact Medical Records', priority: 0.8, changefreq: 'weekly', element: RedactMedicalRecords },

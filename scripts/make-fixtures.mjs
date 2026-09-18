@@ -79,6 +79,23 @@ async function drawNoSecret() {
   fs.writeFileSync(path.join(FIXTURES_DIR, 'no-secret.pdf'), await doc.save());
 }
 
+async function drawFlat() {
+  const doc = await PDFDocument.create();
+  const page = doc.addPage([612, 792]);
+  const font = await doc.embedFont(StandardFonts.Helvetica);
+  const drawLine = (y) => page.drawLine({ start: { x: 150, y }, end: { x: 450, y }, thickness: 1, color: rgb(0, 0, 0) });
+  page.drawText('Flat PDF - no form fields', { x: 72, y: 720, size: 18, font });
+  page.drawText('Name:', { x: 72, y: 650, size: 12, font });
+  drawLine(655);
+  page.drawText('Date:', { x: 72, y: 600, size: 12, font });
+  drawLine(605);
+  page.drawText('Signature:', { x: 72, y: 550, size: 12, font });
+  drawLine(555);
+  const formsDir = path.join(FIXTURES_DIR, 'forms');
+  ensureDir(formsDir);
+  fs.writeFileSync(path.join(formsDir, 'flat.pdf'), await doc.save());
+}
+
 async function main() {
   ensureDir(FIXTURES_DIR);
   await drawBasic();
@@ -86,6 +103,7 @@ async function main() {
   await drawWithAnnotation();
   await drawRepeated();
   await drawNoSecret();
+  await drawFlat();
   console.log('Fixtures written to', FIXTURES_DIR);
 }
 
