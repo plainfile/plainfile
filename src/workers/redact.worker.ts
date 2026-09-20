@@ -263,4 +263,12 @@ self.addEventListener("message", async (event: MessageEvent<WorkerRequest>) => {
     self.postMessage({ type: event.data.type, ok: false, error: message });
   }
 });
+
+self.addEventListener("unhandledrejection", (event) => {
+  const reason = event.reason;
+  const message = reason instanceof Error ? reason.message : String(reason);
+  self.postMessage({ type: "error", ok: false, error: `Unhandled worker error: ${message}` });
+  event.preventDefault();
+});
+
 self.postMessage({ type: "ready" });

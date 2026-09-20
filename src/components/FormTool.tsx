@@ -5,11 +5,14 @@ import {
   Download,
   FileUp,
   Loader2,
+  Minus,
   MousePointer2,
   Pencil,
+  Plus,
   Shield,
   Trash2,
   Type,
+  ZoomIn,
 } from "lucide-react";
 import type {
   PageInfo,
@@ -30,17 +33,27 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useVisualViewportScroll } from "@/hooks/use-visual-viewport";
 import { FieldOverlay } from "./FieldOverlay";
 import { SignaturePad } from "./SignaturePad";
 
 const RENDER_DPI = 144;
 const SCALE = RENDER_DPI / 72;
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
+const MAX_PAGES = 200;
 const DEFAULT_SIGNATURE_WIDTH = 150;
 const DEFAULT_SIGNATURE_HEIGHT = 60;
 const DEFAULT_OVERLAY_FONT_SIZE = 14;
+const MIN_TAP_SIZE = 44;
+const PREVIEW_PADDING = 16;
 
-function createRedactWorker(): Promise<Worker> {
+function formatSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function createRedactWorker(onFatal?: (message: string) => void): Promise<Worker> {
   return new Promise((resolve, reject) => {
     const worker = new Worker(
       new URL("../workers/redact.worker.ts", import.meta.url),
@@ -49,11 +62,24 @@ function createRedactWorker(): Promise<Worker> {
     const readyHandler = (event: MessageEvent) => {
       if (event.data?.type === "ready") {
         worker.removeEventListener("message", readyHandler);
+        worker.addEventListener("error", (event) => {
+          const message = event.message || "Worker encountered an unexpected error";
+          onFatal?.(message);
+        });
+        worker.addEventListener("messageerror", () => {
+          onFatal?.("Worker message could not be deserialized");
+        });
         resolve(worker);
       }
     };
+    const startErrorHandler = (event: ErrorEvent) => {
+      const message =
+        event.message || event.error?.message || "Worker failed to start";
+      onFatal?.(message);
+      reject(new Error(message));
+    };
     worker.addEventListener("message", readyHandler);
-    worker.addEventListener("error", reject);
+    worker.addEventListener("error", startErrorHandler, { once: true });
   });
 }
 
@@ -71,11 +97,17 @@ function postRedactMessage(
       }
     };
     worker.addEventListener("message", handler);
-    worker.postMessage(request);
+    try {
+      worker.postMessage(request);
+    } catch (err: unknown) {
+      worker.removeEventListener("message", handler);
+      const message = err instanceof Error ? err.message : "Failed to send message to worker";
+      reject(new Error(message));
+    }
   });
 }
 
-function createFillWorker(): Promise<Worker> {
+function createFillWorker(onFatal?: (message: string) => void): Promise<Worker> {
   return new Promise((resolve, reject) => {
     const worker = new Worker(
       new URL("../workers/fill.worker.ts", import.meta.url),
@@ -84,11 +116,24 @@ function createFillWorker(): Promise<Worker> {
     const readyHandler = (event: MessageEvent) => {
       if (event.data?.type === "ready") {
         worker.removeEventListener("message", readyHandler);
+        worker.addEventListener("error", (event) => {
+          const message = event.message || "Worker encountered an unexpected error";
+          onFatal?.(message);
+        });
+        worker.addEventListener("messageerror", () => {
+          onFatal?.("Worker message could not be deserialized");
+        });
         resolve(worker);
       }
     };
+    const startErrorHandler = (event: ErrorEvent) => {
+      const message =
+        event.message || event.error?.message || "Worker failed to start";
+      onFatal?.(message);
+      reject(new Error(message));
+    };
     worker.addEventListener("message", readyHandler);
-    worker.addEventListener("error", reject);
+    worker.addEventListener("error", startErrorHandler, { once: true });
   });
 }
 
@@ -108,7 +153,13 @@ function postFillMessage(
       }
     };
     worker.addEventListener("message", handler);
-    worker.postMessage(request);
+    try {
+      worker.postMessage(request);
+    } catch (err: unknown) {
+      worker.removeEventListener("message", handler);
+      const message = err instanceof Error ? err.message : "Failed to send message to worker";
+      reject(new Error(message));
+    }
   });
 }
 
@@ -122,10 +173,13 @@ export interface FormToolProps {
 export function FormTool({ title, description, initialPdf }: FormToolProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const previewRef = useRef<HTMLDivElement | null>(null);
   const pageBitmapRef = useRef<ImageBitmap | null>(null);
   const originalBytesRef = useRef<Uint8Array | null>(null);
   const redactWorkerPromiseRef = useRef<Promise<Worker> | null>(null);
   const fillWorkerPromiseRef = useRef<Promise<Worker> | null>(null);
+  const pinchPointersRef = useRef<Map<number, { x: number; y: number }>>(new Map());
+  const pinchStartRef = useRef<{ distance: number; zoom: number } | null>(null);
 
   const [fileName, setFileName] = useState<string | null>(null);
   const [pages, setPages] = useState<PageInfo[]>([]);
@@ -137,7 +191,8 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [outputBytes, setOutputBytes] = useState<Uint8Array | null>(null);
-  const [zoom, setZoom] = useState(1);
+  const [baseZoom, setBaseZoom] = useState(1);
+  const [userZoom, setUserZoom] = useState(1);
 
   const [activeTool, setActiveTool] = useState<"form" | "text" | "signature">("form");
   const [textOverlays, setTextOverlays] = useState<TextOverlay[]>([]);
@@ -145,37 +200,78 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
   const [signature, setSignature] = useState<SignaturePlacement | null>(null);
   const [signatureOpen, setSignatureOpen] = useState(false);
 
+  useVisualViewportScroll();
+
+  const zoom = baseZoom * userZoom;
+
+  const handleWorkerFatal = useCallback((message: string) => {
+    setLoading(false);
+    setError(
+      `${message}. The worker stopped unexpectedly. Please reload the page and try again.`,
+    );
+    redactWorkerPromiseRef.current
+      ?.then((w) => w.terminate())
+      .catch(() => {
+        // ignore termination errors
+      });
+    fillWorkerPromiseRef.current
+      ?.then((w) => w.terminate())
+      .catch(() => {
+        // ignore termination errors
+      });
+    redactWorkerPromiseRef.current = null;
+    fillWorkerPromiseRef.current = null;
+  }, []);
+
   useEffect(() => {
-    redactWorkerPromiseRef.current = createRedactWorker();
-    fillWorkerPromiseRef.current = createFillWorker();
+    redactWorkerPromiseRef.current = createRedactWorker(handleWorkerFatal);
+    fillWorkerPromiseRef.current = createFillWorker(handleWorkerFatal);
     return () => {
-      redactWorkerPromiseRef.current?.then((w) => w.terminate());
+      redactWorkerPromiseRef.current
+        ?.then((w) => w.terminate())
+        .catch(() => {
+          // ignore termination errors
+        });
       redactWorkerPromiseRef.current = null;
-      fillWorkerPromiseRef.current?.then((w) => w.terminate());
+      fillWorkerPromiseRef.current
+        ?.then((w) => w.terminate())
+        .catch(() => {
+          // ignore termination errors
+        });
       fillWorkerPromiseRef.current = null;
     };
-  }, []);
+  }, [handleWorkerFatal]);
 
   const ensureRedactWorker = useCallback(async () => {
     if (!redactWorkerPromiseRef.current) {
-      redactWorkerPromiseRef.current = createRedactWorker();
+      redactWorkerPromiseRef.current = createRedactWorker(handleWorkerFatal);
     }
     return redactWorkerPromiseRef.current;
-  }, []);
+  }, [handleWorkerFatal]);
 
   const ensureFillWorker = useCallback(async () => {
     if (!fillWorkerPromiseRef.current) {
-      fillWorkerPromiseRef.current = createFillWorker();
+      fillWorkerPromiseRef.current = createFillWorker(handleWorkerFatal);
     }
     return fillWorkerPromiseRef.current;
-  }, []);
+  }, [handleWorkerFatal]);
 
   const measureZoom = useCallback(() => {
+    const container = previewRef.current;
+    const size = pageSizes[currentPage];
+    if (!container || !size) return;
+    const available = Math.max(100, container.clientWidth - PREVIEW_PADDING);
+    setBaseZoom(available / size.width);
+  }, [pageSizes, currentPage]);
+
+  // Apply the current zoom to the canvas CSS size so overlays stay aligned.
+  useEffect(() => {
     const canvas = canvasRef.current;
     const size = pageSizes[currentPage];
     if (!canvas || !size) return;
-    setZoom(canvas.clientWidth / size.width);
-  }, [pageSizes, currentPage]);
+    canvas.style.width = `${size.width * zoom}px`;
+    canvas.style.height = `${size.height * zoom}px`;
+  }, [zoom, pageSizes, currentPage]);
 
   const canvasToPdfPoint = useCallback(
     (clientX: number, clientY: number) => {
@@ -201,6 +297,86 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [measureZoom]);
+
+  const zoomIn = useCallback(() => {
+    setUserZoom((prev) => Math.min(3, Math.round(prev * 1.2 * 100) / 100));
+  }, []);
+
+  const zoomOut = useCallback(() => {
+    setUserZoom((prev) => Math.max(0.25, Math.round(prev / 1.2 * 100) / 100));
+  }, []);
+
+  const resetZoom = useCallback(() => {
+    setUserZoom(1);
+  }, []);
+
+  const getPinchDistance = useCallback(() => {
+    const points = Array.from(pinchPointersRef.current.values());
+    if (points.length !== 2) return 0;
+    const dx = points[0].x - points[1].x;
+    const dy = points[0].y - points[1].y;
+    return Math.hypot(dx, dy);
+  }, []);
+
+  const handlePreviewPointerDown = useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      if (activeTool !== "form") return;
+      const target = event.currentTarget;
+      try {
+        target.setPointerCapture(event.pointerId);
+      } catch {
+        // ignore
+      }
+      pinchPointersRef.current.set(event.pointerId, {
+        x: event.clientX,
+        y: event.clientY,
+      });
+      if (pinchPointersRef.current.size === 2) {
+        const distance = getPinchDistance();
+        if (distance > 0) {
+          pinchStartRef.current = { distance, zoom: userZoom };
+        }
+      }
+    },
+    [activeTool, userZoom, getPinchDistance],
+  );
+
+  const handlePreviewPointerMove = useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      if (activeTool !== "form") return;
+      if (!pinchPointersRef.current.has(event.pointerId)) return;
+      pinchPointersRef.current.set(event.pointerId, {
+        x: event.clientX,
+        y: event.clientY,
+      });
+      if (pinchPointersRef.current.size === 2 && pinchStartRef.current) {
+        event.preventDefault();
+        const distance = getPinchDistance();
+        if (distance > 0 && pinchStartRef.current.distance > 0) {
+          const next =
+            pinchStartRef.current.zoom * (distance / pinchStartRef.current.distance);
+          setUserZoom(Math.min(3, Math.max(0.25, Math.round(next * 100) / 100)));
+        }
+      }
+    },
+    [activeTool, getPinchDistance],
+  );
+
+  const handlePreviewPointerUp = useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      const target = event.currentTarget;
+      try {
+        target.releasePointerCapture(event.pointerId);
+      } catch {
+        // ignore
+      }
+      pinchPointersRef.current.delete(event.pointerId);
+      if (pinchPointersRef.current.size < 2) {
+        pinchStartRef.current = null;
+      }
+    },
+    [],
+  );
 
   const renderPage = useCallback(
     async (pageIndex: number) => {
@@ -248,7 +424,9 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
           return;
         }
         if (file.size > MAX_FILE_SIZE) {
-          setError("File is too large. Max size is 50 MB.");
+          setError(
+            `File is too large (${formatSize(file.size)}). Maximum file size is ${formatSize(MAX_FILE_SIZE)}.`,
+          );
           return;
         }
 
@@ -260,6 +438,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
         setValues({});
         setPageSizes([]);
         setCurrentPage(0);
+        setUserZoom(1);
 
         const bytes = await file.arrayBuffer();
         originalBytesRef.current = new Uint8Array(bytes);
@@ -274,6 +453,13 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
         const { pages: pageInfos } = loadResponse.data as {
           pages: PageInfo[];
         };
+        if (pageInfos.length > MAX_PAGES) {
+          setLoading(false);
+          setError(
+            `This PDF has ${pageInfos.length} pages. The maximum supported is ${MAX_PAGES} pages. Please upload a shorter PDF.`,
+          );
+          return;
+        }
         setPages(pageInfos);
 
         const fillWorker = await ensureFillWorker();
@@ -342,6 +528,29 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
       setValues((prev) => ({ ...prev, [name]: value }));
     },
     [],
+  );
+
+  const scrollToField = useCallback((name: string) => {
+    const sideEl = document.getElementById(`field-side-${name}`);
+    const overlayEl = document.getElementById(`field-overlay-${name}`);
+    if (sideEl) {
+      sideEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+    if (overlayEl) {
+      overlayEl.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+    }
+  }, []);
+
+  const handleFieldFocus = useCallback(
+    (name: string) => {
+      const field = fields.find((f) => f.name === name);
+      if (field && field.page !== currentPage) {
+        setCurrentPage(field.page);
+      }
+      // Allow the layout/page render to settle before scrolling.
+      window.setTimeout(() => scrollToField(name), 50);
+    },
+    [fields, currentPage, scrollToField],
   );
 
   const handleCanvasClick = useCallback(
@@ -500,10 +709,41 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                   Page {currentPage + 1} of {pages.length}
                 </span>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex items-center gap-1 sm:hidden">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="min-h-11 min-w-11"
+                    onClick={zoomOut}
+                    aria-label="Zoom out"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="min-h-11 min-w-11"
+                    onClick={resetZoom}
+                    aria-label="Reset zoom"
+                    title={`${Math.round(userZoom * 100)}%`}
+                  >
+                    <ZoomIn className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="min-h-11 min-w-11"
+                    onClick={zoomIn}
+                    aria-label="Zoom in"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
                 <Button
                   variant="outline"
                   size="sm"
+                  className="min-h-11 sm:min-h-8"
                   disabled={currentPage === 0}
                   onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
                   aria-label="Previous page"
@@ -514,6 +754,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                 <Button
                   variant="outline"
                   size="sm"
+                  className="min-h-11 sm:min-h-8"
                   disabled={currentPage >= pages.length - 1}
                   onClick={() =>
                     setCurrentPage((p) => Math.min(pages.length - 1, p + 1))
@@ -526,7 +767,14 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
               </div>
             </div>
 
-            <div className="relative overflow-auto rounded-lg border bg-white p-2 shadow-sm dark:bg-black">
+            <div
+              ref={previewRef}
+              onPointerDown={handlePreviewPointerDown}
+              onPointerMove={handlePreviewPointerMove}
+              onPointerUp={handlePreviewPointerUp}
+              onPointerCancel={handlePreviewPointerUp}
+              className="relative overflow-auto rounded-lg border bg-white p-2 shadow-sm dark:bg-black"
+            >
               <canvas
                 ref={canvasRef}
                 className={`max-w-full ${activeTool === "text" ? "cursor-crosshair" : ""}`}
@@ -539,6 +787,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                   zoom={zoom}
                   values={values}
                   onChange={handleValueChange}
+                  onFieldFocus={handleFieldFocus}
                 />
               )}
               {currentPageSize && (
@@ -575,6 +824,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                 <Button
                   variant={activeTool === "form" ? "default" : "outline"}
                   size="sm"
+                  className="min-h-11 sm:min-h-8"
                   onClick={() => setActiveTool("form")}
                   aria-pressed={activeTool === "form"}
                 >
@@ -584,6 +834,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                 <Button
                   variant={activeTool === "text" ? "default" : "outline"}
                   size="sm"
+                  className="min-h-11 sm:min-h-8"
                   onClick={() => setActiveTool("text")}
                   aria-pressed={activeTool === "text"}
                 >
@@ -593,6 +844,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                 <Button
                   variant={activeTool === "signature" ? "default" : "outline"}
                   size="sm"
+                  className="min-h-11 sm:min-h-8"
                   onClick={() => setSignatureOpen(true)}
                   aria-pressed={activeTool === "signature"}
                 >
@@ -614,6 +866,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                     return (
                       <li
                         key={field.name}
+                        id={`field-side-${field.name}`}
                         className="space-y-1 rounded-md border p-2 text-sm"
                       >
                         <Label
@@ -627,7 +880,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                             </span>
                           )}
                         </Label>
-                        {renderSideInput(field, value, handleValueChange)}
+                        {renderSideInput(field, value, handleValueChange, handleFieldFocus)}
                       </li>
                     );
                   })}
@@ -651,7 +904,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-6 w-6 shrink-0"
+                          className="h-6 w-6 min-h-11 min-w-11 sm:min-h-9 sm:min-w-9"
                           onClick={() => deleteOverlay(idx)}
                           aria-label={`Delete text overlay ${idx + 1}`}
                         >
@@ -667,7 +920,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6 shrink-0"
+                      className="h-6 w-6 min-h-11 min-w-11 sm:min-h-9 sm:min-w-9"
                       onClick={() => setSignature(null)}
                       aria-label="Delete signature"
                     >
@@ -684,7 +937,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                 className={progress === 0 ? "opacity-0" : ""}
               />
               <Button
-                className="w-full"
+                className="w-full min-h-11"
                 disabled={
                   loading ||
                   (fields.length === 0 && textOverlays.length === 0 && !signature)
@@ -699,7 +952,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
               {outputBytes && (
                 <Button
                   variant="outline"
-                  className="w-full"
+                  className="w-full min-h-11"
                   onClick={handleDownload}
                 >
                   <Download className="mr-2 h-4 w-4" />
@@ -708,7 +961,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
               )}
               <Button
                 variant="ghost"
-                className="w-full"
+                className="w-full min-h-11"
                 onClick={() => window.location.reload()}
               >
                 Start over
@@ -737,6 +990,7 @@ function renderSideInput(
   field: FormFieldInfo,
   value: string | boolean | undefined,
   onChange: (name: string, value: string | boolean) => void,
+  onFocus?: (name: string) => void,
 ): React.ReactNode {
   const inputId = `field-${field.name}`;
 
@@ -749,16 +1003,18 @@ function renderSideInput(
           maxLength={field.maxLength}
           value={typeof value === "string" ? value : ""}
           onChange={(event) => onChange(field.name, event.target.value)}
-          className="h-8 text-sm"
+          onFocus={() => onFocus?.(field.name)}
+          className="h-8 min-h-11 text-sm"
         />
       );
     case "checkbox":
       return (
-        <div className="flex items-center gap-2 py-1">
+        <div className="flex min-h-11 items-center gap-2 py-1">
           <Checkbox
             id={inputId}
             checked={value === true}
             onCheckedChange={(state) => onChange(field.name, state === true)}
+            onFocus={() => onFocus?.(field.name)}
           />
           <Label htmlFor={inputId} className="text-xs">
             Yes
@@ -775,7 +1031,8 @@ function renderSideInput(
           id={inputId}
           value={stringValue}
           onChange={(event) => onChange(field.name, event.target.value)}
-          className="h-8 w-full rounded border border-input bg-background px-2 text-sm focus:border-[#0066CC] focus:outline-none focus:ring-1 focus:ring-[#0066CC]"
+          onFocus={() => onFocus?.(field.name)}
+          className="h-8 min-h-11 w-full rounded border border-input bg-background px-2 text-sm focus:border-[#0066CC] focus:outline-none focus:ring-1 focus:ring-[#0066CC]"
         >
           {options.map((option) => (
             <option key={option} value={option}>
@@ -826,8 +1083,8 @@ function OverlayLayer({
             style={{
               left: overlay.x * zoom,
               top: overlay.y * zoom,
-              minWidth: 44,
-              minHeight: 44,
+              minWidth: MIN_TAP_SIZE,
+              minHeight: MIN_TAP_SIZE,
             }}
           >
             {isEditing ? (
@@ -849,7 +1106,7 @@ function OverlayLayer({
                     onEdit(null);
                   }
                 }}
-                className="h-auto border-[#0066CC] bg-white/95 px-1 py-0 text-sm shadow-sm dark:bg-black/95"
+                className="h-auto min-h-[44px] border-[#0066CC] bg-white/95 px-1 py-0 text-sm shadow-sm dark:bg-black/95"
                 style={{ fontSize: overlay.fontSize * zoom }}
               />
             ) : (
@@ -933,8 +1190,8 @@ function DraggableSignature({
       style={{
         left: signature.x * zoom,
         top: signature.y * zoom,
-        width: signature.width * zoom,
-        height: signature.height * zoom,
+        width: Math.max(signature.width * zoom, MIN_TAP_SIZE),
+        height: Math.max(signature.height * zoom, MIN_TAP_SIZE),
       }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}

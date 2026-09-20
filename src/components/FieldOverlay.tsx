@@ -9,6 +9,7 @@ export interface FieldOverlayProps {
   zoom: number;
   values: Record<string, string | boolean>;
   onChange: (name: string, value: string | boolean) => void;
+  onFieldFocus?: (name: string) => void;
 }
 
 const TAP_SIZE = 44;
@@ -21,6 +22,7 @@ function renderTextField(
   field: FormFieldInfo,
   value: string | boolean | undefined,
   onChange: (name: string, value: string | boolean) => void,
+  onFocus?: (name: string) => void,
 ): React.ReactNode {
   const textValue = typeof value === 'string' ? value : '';
   return (
@@ -29,7 +31,8 @@ function renderTextField(
       maxLength={field.maxLength}
       value={textValue}
       onChange={(event) => onChange(field.name, event.target.value)}
-      className="h-full w-full border-transparent bg-white/90 px-1 py-0 text-xs shadow-sm focus:border-[#0066CC] focus:ring-2 focus:ring-[#0066CC] dark:bg-black/90"
+      onFocus={() => onFocus?.(field.name)}
+      className="h-full w-full min-h-[44px] border-transparent bg-white/90 px-1 py-0 text-xs shadow-sm focus:border-[#0066CC] focus:ring-2 focus:ring-[#0066CC] dark:bg-black/90"
       style={{ fontSize: 'inherit' }}
     />
   );
@@ -39,6 +42,7 @@ function renderCheckbox(
   field: FormFieldInfo,
   value: string | boolean | undefined,
   onChange: (name: string, value: string | boolean) => void,
+  onFocus?: (name: string) => void,
 ): React.ReactNode {
   const checked = value === true;
   return (
@@ -47,6 +51,7 @@ function renderCheckbox(
         id={fieldKey(field, 'cb')}
         checked={checked}
         onCheckedChange={(state) => onChange(field.name, state === true)}
+        onFocus={() => onFocus?.(field.name)}
         className="h-5 w-5 border-foreground/50 bg-white/90 data-[state=checked]:bg-[#0066CC] data-[state=checked]:text-white dark:bg-black/90"
       />
     </div>
@@ -57,6 +62,7 @@ function renderRadio(
   field: FormFieldInfo,
   value: string | boolean | undefined,
   onChange: (name: string, value: string | boolean) => void,
+  onFocus?: (name: string) => void,
 ): React.ReactNode {
   const selected = typeof value === 'string' ? value : '';
   const options = field.options ?? [];
@@ -68,7 +74,7 @@ function renderRadio(
           <Label
             key={option}
             htmlFor={id}
-            className="flex cursor-pointer items-center gap-1 text-[10px] leading-tight"
+            className="flex min-h-[44px] cursor-pointer items-center gap-1 text-[10px] leading-tight"
           >
             <input
               id={id}
@@ -77,6 +83,7 @@ function renderRadio(
               value={option}
               checked={selected === option}
               onChange={() => onChange(field.name, option)}
+              onFocus={() => onFocus?.(field.name)}
               className="h-3 w-3 accent-[#0066CC] focus:ring-2 focus:ring-[#0066CC]"
             />
             <span className="truncate">{option}</span>
@@ -91,6 +98,7 @@ function renderSelect(
   field: FormFieldInfo,
   value: string | boolean | undefined,
   onChange: (name: string, value: string | boolean) => void,
+  onFocus?: (name: string) => void,
 ): React.ReactNode {
   const stringValue = typeof value === 'string' ? value : '';
   const options = field.options ?? [];
@@ -99,7 +107,8 @@ function renderSelect(
       id={fieldKey(field, 'select')}
       value={stringValue}
       onChange={(event) => onChange(field.name, event.target.value)}
-      className="h-full w-full cursor-pointer appearance-none rounded border border-transparent bg-white/90 px-1 py-0 text-xs shadow-sm focus:border-[#0066CC] focus:outline-none focus:ring-2 focus:ring-[#0066CC] dark:bg-black/90"
+      onFocus={() => onFocus?.(field.name)}
+      className="h-full w-full min-h-[44px] cursor-pointer appearance-none rounded border border-transparent bg-white/90 px-1 py-0 text-xs shadow-sm focus:border-[#0066CC] focus:outline-none focus:ring-2 focus:ring-[#0066CC] dark:bg-black/90"
     >
       {options.map((option) => (
         <option key={option} value={option}>
@@ -114,18 +123,19 @@ function renderField(
   field: FormFieldInfo,
   value: string | boolean | undefined,
   onChange: (name: string, value: string | boolean) => void,
+  onFocus?: (name: string) => void,
 ): React.ReactNode {
   switch (field.type) {
     case 'text':
-      return renderTextField(field, value, onChange);
+      return renderTextField(field, value, onChange, onFocus);
     case 'checkbox':
-      return renderCheckbox(field, value, onChange);
+      return renderCheckbox(field, value, onChange, onFocus);
     case 'radio':
-      return renderRadio(field, value, onChange);
+      return renderRadio(field, value, onChange, onFocus);
     case 'dropdown':
-      return renderSelect(field, value, onChange);
+      return renderSelect(field, value, onChange, onFocus);
     case 'optionlist':
-      return renderSelect(field, value, onChange);
+      return renderSelect(field, value, onChange, onFocus);
     default:
       return null;
   }
@@ -137,6 +147,7 @@ export function FieldOverlay({
   zoom,
   values,
   onChange,
+  onFieldFocus,
 }: FieldOverlayProps): React.ReactNode {
   const pageFields = fields.filter((field) => field.page === page);
 
@@ -151,6 +162,7 @@ export function FieldOverlay({
         return (
           <div
             key={field.name}
+            id={`field-overlay-${field.name}`}
             className="absolute"
             style={{
               left: rect.x * zoom,
@@ -170,7 +182,7 @@ export function FieldOverlay({
                   : undefined
               }
             >
-              {renderField(field, values[field.name], onChange)}
+              {renderField(field, values[field.name], onChange, onFieldFocus)}
             </div>
           </div>
         );

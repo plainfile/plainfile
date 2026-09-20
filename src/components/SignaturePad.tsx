@@ -209,6 +209,7 @@ export function SignaturePad({ open, onOpenChange, onSignature }: SignaturePadPr
               type="button"
               variant={mode === "draw" ? "default" : "outline"}
               size="sm"
+              className="min-h-11 sm:min-h-8"
               onClick={() => setMode("draw")}
               aria-pressed={mode === "draw"}
             >
@@ -219,6 +220,7 @@ export function SignaturePad({ open, onOpenChange, onSignature }: SignaturePadPr
               type="button"
               variant={mode === "type" ? "default" : "outline"}
               size="sm"
+              className="min-h-11 sm:min-h-8"
               onClick={() => setMode("type")}
               aria-pressed={mode === "type"}
             >
@@ -259,15 +261,25 @@ export function SignaturePad({ open, onOpenChange, onSignature }: SignaturePadPr
         </div>
 
         <DialogFooter className="flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <Button type="button" variant="outline" onClick={handleClear}>
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11"
+            onClick={handleClear}
+          >
             <Eraser className="mr-2 h-4 w-4" />
             Clear
           </Button>
-          <Button type="button" variant="outline" onClick={handleCancel}>
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11"
+            onClick={handleCancel}
+          >
             <X className="mr-2 h-4 w-4" />
             Cancel
           </Button>
-          <Button type="button" onClick={handleSave}>
+          <Button type="button" className="min-h-11" onClick={handleSave}>
             <Check className="mr-2 h-4 w-4" />
             Save
           </Button>

@@ -34,9 +34,9 @@ export function setConsent(value: Consent): void {
     // Ignore environments where localStorage is unavailable.
   }
 
-  // if (value === 'accepted') {
-  //   initGA();
-  // }
+  if (value === 'accepted') {
+    initGA();
+  }
 }
 
 /**
@@ -89,12 +89,11 @@ function initGA(): void {
   // Use the exact standard gtag snippet order: initialize dataLayer and the
   // command queue before loading the external script.
   win.dataLayer = win.dataLayer || [];
-  // function gtag(...args: unknown[]) {
-  //   win.dataLayer.push(args);
-  // }
-  // win.gtag = gtag;
-  if(typeof win.gtag != 'function') return;
-  win.gtag('js', new Date());
+  function gtag(...args: unknown[]) {
+    win.dataLayer.push(args);
+  }
+  win.gtag = gtag;
+  gtag('js', new Date());
   // Enable debug_mode so events appear in GA4 DebugView.
   win.gtag('config', GA_ID, { debug_mode: true });
   console.log('[analytics] queued config for measurement ID:', GA_ID);
