@@ -62,6 +62,7 @@ async function handleInspect(id: number, bytes: Uint8Array): Promise<FillWorkerR
   const doc = await PDFDocument.load(bytes);
   const form = doc.getForm();
   const fields = form.getFields();
+  console.log(`[fill.worker] handleInspect: loaded ${bytes.byteLength} bytes, found ${fields.length} fields`);
   const pages = doc.getPages();
 
   const pageIndexByRef = new Map(pages.map((page, index) => [page.ref.toString(), index]));

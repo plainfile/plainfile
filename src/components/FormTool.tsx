@@ -31,7 +31,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useVisualViewportScroll } from "@/hooks/use-visual-viewport";
 import { FieldOverlay } from "./FieldOverlay";
@@ -413,6 +412,14 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
     [ensureRedactWorker, measureZoom],
   );
 
+  // Render the current page whenever it changes or when page sizes become available.
+  // This effect synchronizes the canvas with the active page state.
+  useEffect(() => {
+    if (!fileName || !pageSizes[currentPage]) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    renderPage(currentPage);
+  }, [currentPage, fileName, pageSizes, renderPage]);
+
   const loadFile = useCallback(
     async (file: File) => {
       try {
@@ -482,7 +489,6 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
 
         if (pageInfos.length > 0) {
           setCurrentPage(0);
-          await renderPage(0);
         }
         setLoading(false);
       } catch (err: unknown) {
@@ -490,7 +496,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
         setError(err instanceof Error ? err.message : String(err));
       }
     },
-    [ensureRedactWorker, ensureFillWorker, renderPage],
+    [ensureRedactWorker, ensureFillWorker],
   );
 
   const initialLoadStartedRef = useRef(false);
@@ -664,9 +670,6 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
           <h1 className="text-3xl font-bold tracking-tight">{displayTitle}</h1>
           <p className="text-muted-foreground">{displayDescription}</p>
         </div>
-        <Badge variant="outline" className="w-fit font-mono text-xs">
-          0 bytes uploaded
-        </Badge>
       </div>
 
       {!fileName ? (
@@ -777,7 +780,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
             >
               <canvas
                 ref={canvasRef}
-                className={`max-w-full ${activeTool === "text" ? "cursor-crosshair" : ""}`}
+                className={`${activeTool === "text" ? "cursor-crosshair" : ""}`}
                 onClick={handleCanvasClick}
               />
               {fields.length > 0 && currentPageSize && (

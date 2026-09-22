@@ -41,11 +41,14 @@ export default function FormScenario() {
         if (contentType.includes("text/html")) {
           throw new Error("Template not found (server returned HTML)");
         }
-        return res.arrayBuffer();
+        return res.arrayBuffer().then((bytes) => ({ bytes, contentType }));
       })
-      .then((bytes) => {
+      .then(({ bytes, contentType }) => {
         const magic = new Uint8Array(bytes, 0, Math.min(bytes.byteLength, 5));
         const header = new TextDecoder().decode(magic);
+        console.log(
+          `[FormScenario] loaded template ${form.embeddedPdf}: contentType=${contentType}, size=${bytes.byteLength}, header=${header}`,
+        );
         if (!header.startsWith("%PDF-")) {
           throw new Error("Template is not a valid PDF file");
         }
@@ -114,10 +117,10 @@ export default function FormScenario() {
         jsonLd={[softwareApplicationLd, faqLd, howToLd]}
       />
 
-      <section className="mb-8">
+      {/* <section className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">{form.title}</h1>
         <p className="text-muted-foreground">{form.description}</p>
-      </section>
+      </section> */}
 
       {loading && (
         <div className="flex items-center justify-center py-16">

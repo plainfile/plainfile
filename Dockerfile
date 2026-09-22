@@ -33,13 +33,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY package*.json ./
 RUN npm ci
+RUN npx playwright install  
 
 # Optional build-time arg for Google Analytics.
 ARG VITE_GA_MEASUREMENT_ID
 
 COPY . .
 RUN npm run build
-RUN npm run prerender
+RUN npm run prerender 
 
 # Runtime stage: lightweight Caddy image serving the prerendered static site.
 FROM caddy:2-alpine

@@ -15,12 +15,14 @@ const nav = [
   { path: "/", label: "Home" },
   { path: "/tools", label: "Tools" },
   { path: "/pdf/redact", label: "Redact PDF" },
+  { path: "/forms", label: "PDF Forms"},
   { path: "/privacy", label: "Privacy" },
 ];
 
 const footerNav = [
   { path: "/tools", label: "Tools" },
   { path: "/pdf/redact", label: "Redact PDF" },
+  { path: "/forms", label: "PDF Forms"},
   { path: "/privacy", label: "Privacy" },
 ];
 
