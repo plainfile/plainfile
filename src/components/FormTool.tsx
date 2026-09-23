@@ -33,6 +33,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { useVisualViewportScroll } from "@/hooks/use-visual-viewport";
+import { getFieldLabel } from "@/lib/field-labels";
 import { FieldOverlay } from "./FieldOverlay";
 import { SignaturePad } from "./SignaturePad";
 
@@ -167,9 +168,11 @@ export interface FormToolProps {
   description?: string;
   // Optional initial PDF bytes/fileName for scenario pages (D4). Not used in D2.
   initialPdf?: { bytes: ArrayBuffer; fileName: string };
+  // Optional form ID for looking up human-readable field labels.
+  formId?: string;
 }
 
-export function FormTool({ title, description, initialPdf }: FormToolProps) {
+export function FormTool({ title, description, initialPdf, formId }: FormToolProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const previewRef = useRef<HTMLDivElement | null>(null);
@@ -876,7 +879,7 @@ export function FormTool({ title, description, initialPdf }: FormToolProps) {
                           htmlFor={`field-${field.name}`}
                           className="block text-xs text-muted-foreground"
                         >
-                          {field.name}
+                          {getFieldLabel(formId, field.name)}
                           {field.page !== currentPage && (
                             <span className="ml-1 text-[10px]">
                               (page {field.page + 1})

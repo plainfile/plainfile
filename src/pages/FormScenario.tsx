@@ -154,6 +154,7 @@ export default function FormScenario() {
           title={form.title}
           description={form.description}
           initialPdf={initialPdf}
+          formId={form.id}
         />
       )}
 

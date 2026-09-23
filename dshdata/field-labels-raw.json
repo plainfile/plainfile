@@ -1,0 +1,787 @@
+{
+  "w9": [
+    {
+      "name": "topmostSubform[0].Page1[0].f1_01[0]",
+      "page": 0,
+      "rect": {
+        "x": 58.6,
+        "y": 659.967,
+        "width": 517.4,
+        "height": 14
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_02[0]",
+      "page": 0,
+      "rect": {
+        "x": 58.6,
+        "y": 635.966,
+        "width": 517.4,
+        "height": 14.000999999999976
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[0]",
+      "page": 0,
+      "rect": {
+        "x": 73,
+        "y": 603.719,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[1]",
+      "page": 0,
+      "rect": {
+        "x": 180,
+        "y": 603.719,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[2]",
+      "page": 0,
+      "rect": {
+        "x": 252,
+        "y": 603.719,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[3]",
+      "page": 0,
+      "rect": {
+        "x": 324,
+        "y": 603.719,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[4]",
+      "page": 0,
+      "rect": {
+        "x": 388.8,
+        "y": 603.719,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[5]",
+      "page": 0,
+      "rect": {
+        "x": 72.999,
+        "y": 590.47,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].f1_03[0]",
+      "page": 0,
+      "rect": {
+        "x": 417.6,
+        "y": 588.97,
+        "width": 28.799999999999955,
+        "height": 10.999000000000024
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[6]",
+      "page": 0,
+      "rect": {
+        "x": 72.999,
+        "y": 553.97,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].f1_04[0]",
+      "page": 0,
+      "rect": {
+        "x": 162.4,
+        "y": 551.97,
+        "width": 284,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_2[0]",
+      "page": 0,
+      "rect": {
+        "x": 440.6,
+        "y": 520.971,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_05[0]",
+      "page": 0,
+      "rect": {
+        "x": 543.6,
+        "y": 587.97,
+        "width": 32.39999999999998,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_06[0]",
+      "page": 0,
+      "rect": {
+        "x": 500.6,
+        "y": 551.97,
+        "width": 75.39999999999998,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_07[0]",
+      "page": 0,
+      "rect": {
+        "x": 58.6,
+        "y": 491.966,
+        "width": 329.45,
+        "height": 14.000999999999976
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_08[0]",
+      "page": 0,
+      "rect": {
+        "x": 58.6,
+        "y": 467.968,
+        "width": 329.45,
+        "height": 14.000999999999976
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_09[0]",
+      "page": 0,
+      "rect": {
+        "x": 389.8,
+        "y": 467.968,
+        "width": 186.2,
+        "height": 37.99899999999997
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_10[0]",
+      "page": 0,
+      "rect": {
+        "x": 58.6,
+        "y": 443.967,
+        "width": 517.4,
+        "height": 14.001000000000033
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_11[0]",
+      "page": 0,
+      "rect": {
+        "x": 417.6,
+        "y": 395.968,
+        "width": 43.19999999999999,
+        "height": 24.000999999999976
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_12[0]",
+      "page": 0,
+      "rect": {
+        "x": 475.2,
+        "y": 395.968,
+        "width": 28.80000000000001,
+        "height": 24.000999999999976
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_13[0]",
+      "page": 0,
+      "rect": {
+        "x": 518.4,
+        "y": 395.968,
+        "width": 57.60000000000002,
+        "height": 24.000999999999976
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_14[0]",
+      "page": 0,
+      "rect": {
+        "x": 417.6,
+        "y": 347.966,
+        "width": 28.799999999999955,
+        "height": 24.000999999999976
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_15[0]",
+      "page": 0,
+      "rect": {
+        "x": 460.8,
+        "y": 347.966,
+        "width": 100.80000000000001,
+        "height": 24.000999999999976
+      },
+      "nearbyText": "Form  W-9 | (Rev. March 2024) |  | Request for Taxpayer  | Identification Number and Certification | Department of the Treasury   | Internal Revenue Service  | Go to www.irs.gov/FormW9 for instructions and the latest information."
+    }
+  ],
+  "w4": [
+    {
+      "name": "topmostSubform[0].Page1[0].Step1a[0].f1_01[0]",
+      "page": 0,
+      "rect": {
+        "x": 94.6,
+        "y": 683.968,
+        "width": 178.25000000000003,
+        "height": 14.00100000000009
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Step1a[0].f1_02[0]",
+      "page": 0,
+      "rect": {
+        "x": 274.6,
+        "y": 683.968,
+        "width": 199.84999999999997,
+        "height": 14.00100000000009
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Step1a[0].f1_03[0]",
+      "page": 0,
+      "rect": {
+        "x": 94.6,
+        "y": 659.967,
+        "width": 379.85,
+        "height": 14.000999999999976
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Step1a[0].f1_04[0]",
+      "page": 0,
+      "rect": {
+        "x": 94.6,
+        "y": 635.966,
+        "width": 379.85,
+        "height": 14.000999999999976
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_05[0]",
+      "page": 0,
+      "rect": {
+        "x": 476.2,
+        "y": 683.968,
+        "width": 99.80000000000001,
+        "height": 14.00100000000009
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].c1_1[0]",
+      "page": 0,
+      "rect": {
+        "x": 115.2,
+        "y": 625.97,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].c1_1[1]",
+      "page": 0,
+      "rect": {
+        "x": 115.2,
+        "y": 613.968,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].c1_1[2]",
+      "page": 0,
+      "rect": {
+        "x": 115.2,
+        "y": 602.219,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].c1_2[0]",
+      "page": 0,
+      "rect": {
+        "x": 564,
+        "y": 379.968,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Step3_ReadOrder[0].f1_06[0]",
+      "page": 0,
+      "rect": {
+        "x": 417.6,
+        "y": 299.97,
+        "width": 64.04999999999995,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].Step3_ReadOrder[0].f1_07[0]",
+      "page": 0,
+      "rect": {
+        "x": 417.6,
+        "y": 287.968,
+        "width": 64.04999999999995,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_08[0]",
+      "page": 0,
+      "rect": {
+        "x": 511.2,
+        "y": 263.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_09[0]",
+      "page": 0,
+      "rect": {
+        "x": 511.2,
+        "y": 227.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999995
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_10[0]",
+      "page": 0,
+      "rect": {
+        "x": 511.2,
+        "y": 191.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999995
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_11[0]",
+      "page": 0,
+      "rect": {
+        "x": 511.2,
+        "y": 173.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999995
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].c1_3[0]",
+      "page": 0,
+      "rect": {
+        "x": 564,
+        "y": 129.468,
+        "width": 8,
+        "height": 8
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_12[0]",
+      "page": 0,
+      "rect": {
+        "x": 94.6,
+        "y": 35.968,
+        "width": 293.45000000000005,
+        "height": 30.00099999999999
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_13[0]",
+      "page": 0,
+      "rect": {
+        "x": 389.8,
+        "y": 35.968,
+        "width": 77.44999999999999,
+        "height": 12.000999999999998
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page1[0].f1_14[0]",
+      "page": 0,
+      "rect": {
+        "x": 469,
+        "y": 35.968,
+        "width": 107,
+        "height": 12.000999999999998
+      },
+      "nearbyText": "Form  W-4 |  | 2026 |  | Employee’s Withholding Certificate |  | Department of the Treasury   | Internal Revenue Service "
+    },
+    {
+      "name": "topmostSubform[0].Page3[0].f3_01[0]",
+      "page": 2,
+      "rect": {
+        "x": 511.2,
+        "y": 587.97,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 3 |  | Step 2(b)—Multiple Jobs Worksheet  (Keep for your records.) |  | If you choose the option in Step 2(b) on Form W-4, complete this worksheet (which calculates the total extra tax for all jobs) on only  | ONE Form W-4. Withholding will be most accurate if you complete the worksheet and enter the result on the Form W-4 for the highest  | paying job. To be accurate, submit a new Form W-4 for all other jobs if you have not updated your withholding since 2019."
+    },
+    {
+      "name": "topmostSubform[0].Page3[0].f3_02[0]",
+      "page": 2,
+      "rect": {
+        "x": 511.2,
+        "y": 497.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form W-4 (2026) | Page 3 |  | Step 2(b)—Multiple Jobs Worksheet  (Keep for your records.) |  | If you choose the option in Step 2(b) on Form W-4, complete this worksheet (which calculates the total extra tax for all jobs) on only  | ONE Form W-4. Withholding will be most accurate if you complete the worksheet and enter the result on the Form W-4 for the highest  | paying job. To be accurate, submit a new Form W-4 for all other jobs if you have not updated your withholding since 2019."
+    },
+    {
+      "name": "topmostSubform[0].Page3[0].f3_03[0]",
+      "page": 2,
+      "rect": {
+        "x": 511.2,
+        "y": 437.969,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 3 |  | Step 2(b)—Multiple Jobs Worksheet  (Keep for your records.) |  | If you choose the option in Step 2(b) on Form W-4, complete this worksheet (which calculates the total extra tax for all jobs) on only  | ONE Form W-4. Withholding will be most accurate if you complete the worksheet and enter the result on the Form W-4 for the highest  | paying job. To be accurate, submit a new Form W-4 for all other jobs if you have not updated your withholding since 2019."
+    },
+    {
+      "name": "topmostSubform[0].Page3[0].f3_04[0]",
+      "page": 2,
+      "rect": {
+        "x": 511.2,
+        "y": 413.968,
+        "width": 64.80000000000001,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form W-4 (2026) | Page 3 |  | Step 2(b)—Multiple Jobs Worksheet  (Keep for your records.) |  | If you choose the option in Step 2(b) on Form W-4, complete this worksheet (which calculates the total extra tax for all jobs) on only  | ONE Form W-4. Withholding will be most accurate if you complete the worksheet and enter the result on the Form W-4 for the highest  | paying job. To be accurate, submit a new Form W-4 for all other jobs if you have not updated your withholding since 2019."
+    },
+    {
+      "name": "topmostSubform[0].Page3[0].f3_05[0]",
+      "page": 2,
+      "rect": {
+        "x": 504,
+        "y": 377.968,
+        "width": 72,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form W-4 (2026) | Page 3 |  | Step 2(b)—Multiple Jobs Worksheet  (Keep for your records.) |  | If you choose the option in Step 2(b) on Form W-4, complete this worksheet (which calculates the total extra tax for all jobs) on only  | ONE Form W-4. Withholding will be most accurate if you complete the worksheet and enter the result on the Form W-4 for the highest  | paying job. To be accurate, submit a new Form W-4 for all other jobs if you have not updated your withholding since 2019."
+    },
+    {
+      "name": "topmostSubform[0].Page3[0].f3_06[0]",
+      "page": 2,
+      "rect": {
+        "x": 511.2,
+        "y": 329.969,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 3 |  | Step 2(b)—Multiple Jobs Worksheet  (Keep for your records.) |  | If you choose the option in Step 2(b) on Form W-4, complete this worksheet (which calculates the total extra tax for all jobs) on only  | ONE Form W-4. Withholding will be most accurate if you complete the worksheet and enter the result on the Form W-4 for the highest  | paying job. To be accurate, submit a new Form W-4 for all other jobs if you have not updated your withholding since 2019."
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_01[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 659.97,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_02[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 623.97,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_03[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 599.969,
+        "width": 64.80000000000001,
+        "height": 11.99899999999991
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_04[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 587.97,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_05[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 563.969,
+        "width": 64.80000000000001,
+        "height": 11.99899999999991
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_06[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 539.968,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_07[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 527.969,
+        "width": 64.80000000000001,
+        "height": 11.99899999999991
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_08[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 491.969,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_09[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 455.969,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_10[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 431.968,
+        "width": 64.80000000000001,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_11[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 395.968,
+        "width": 64.80000000000001,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_12[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 383.969,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_13[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 371.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_14[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 359.968,
+        "width": 64.80000000000001,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_15[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 335.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_16[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 323.968,
+        "width": 64.80000000000001,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_17[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 299.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_18[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 263.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999967
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_19[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 227.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999995
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_20[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 191.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999995
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_21[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 179.968,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_22[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 155.97,
+        "width": 64.80000000000001,
+        "height": 11.998999999999995
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    },
+    {
+      "name": "topmostSubform[0].Page4[0].f4_23[0]",
+      "page": 3,
+      "rect": {
+        "x": 511.2,
+        "y": 143.968,
+        "width": 64.80000000000001,
+        "height": 11.999000000000024
+      },
+      "nearbyText": "Form W-4 (2026) | Page 4 |  | Step 4(b)—Deductions Worksheet  (Keep for your records.) |  | See the Instructions for Schedule 1-A (Form 1040) for more information about whether you qualify for the deductions on lines 1a, 1b,  | 1c, 3a, and 3b. | 1"
+    }
+  ]
+}

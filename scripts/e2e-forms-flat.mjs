@@ -69,7 +69,7 @@ async function main() {
     await fileInput.setInputFiles(FIXTURE);
 
     // Wait for the page to render.
-    await page.waitForSelector("text=Tools", { timeout: 30000 });
+    await page.waitForSelector("text=Page 1 of 1", { timeout: 30000 });
 
     // Switch to Text tool.
     await page.locator('button:has-text("Text")').click();
@@ -81,7 +81,7 @@ async function main() {
     await canvas.click({ position: { x: box.width * 0.3, y: box.height * 0.4 } });
 
     // Type into the overlay input.
-    const overlayInput = page.locator('input[class*="border-[#0066CC]"]').first();
+    const overlayInput = page.locator("div.absolute > input").first();
     await overlayInput.fill("E2E Overlay");
     await overlayInput.press("Enter");
 
