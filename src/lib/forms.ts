@@ -8,6 +8,8 @@ export interface FormFAQItem {
   answer: string;
 }
 
+import type { VirtualField } from "./fill-engine";
+
 export interface FormConfig {
   id: string;
   path: string;
@@ -25,6 +27,7 @@ export interface FormConfig {
   steps?: FormStep[];
   commonMistakesHtml: string;
   faq: FormFAQItem[];
+  virtualFields?: VirtualField[];
 }
 
 const placeholderIntro = (label: string) => `
@@ -55,6 +58,124 @@ const placeholderMistakes = (label: string) => `
     Common mistakes specific to ${label} will be listed here by the content owner.
   </p>
 `;
+
+const ds82VirtualFields: VirtualField[] = [
+  // Application Page 1 (PDF page index 4)
+  { name: "lastName", label: "Last name", type: "text", page: 4, rect: { x: 65, y: 142, width: 540, height: 18 } },
+  { name: "firstName", label: "First name", type: "text", page: 4, rect: { x: 65, y: 162, width: 300, height: 18 } },
+  { name: "middleName", label: "Middle name", type: "text", page: 4, rect: { x: 370, y: 162, width: 235, height: 18 } },
+  { name: "dateOfBirth", label: "Date of Birth", type: "text", page: 4, rect: { x: 65, y: 188, width: 120, height: 18 } },
+  { name: "sex", label: "Sex (M/F)", type: "text", page: 4, rect: { x: 250, y: 188, width: 70, height: 18 } },
+  { name: "placeOfBirth", label: "Place of Birth", type: "text", page: 4, rect: { x: 370, y: 188, width: 235, height: 18 } },
+  { name: "ssn", label: "Social Security Number", type: "text", page: 4, rect: { x: 65, y: 215, width: 170, height: 18 } },
+  { name: "email", label: "Email", type: "text", page: 4, rect: { x: 250, y: 215, width: 170, height: 18 } },
+  { name: "phone", label: "Primary Contact Phone Number", type: "text", page: 4, rect: { x: 435, y: 215, width: 170, height: 18 } },
+  { name: "mailingAddress1", label: "Mailing Address Line 1", type: "text", page: 4, rect: { x: 45, y: 245, width: 560, height: 18 } },
+  { name: "mailingAddress2", label: "Mailing Address Line 2", type: "text", page: 4, rect: { x: 45, y: 275, width: 560, height: 18 } },
+  { name: "city", label: "City", type: "text", page: 4, rect: { x: 45, y: 305, width: 170, height: 18 } },
+  { name: "state", label: "State", type: "text", page: 4, rect: { x: 230, y: 305, width: 80, height: 18 } },
+  { name: "zip", label: "Zip Code", type: "text", page: 4, rect: { x: 325, y: 305, width: 100, height: 18 } },
+  { name: "country", label: "Country", type: "text", page: 4, rect: { x: 440, y: 305, width: 165, height: 18 } },
+  { name: "previousNameA", label: "Other names used (A)", type: "text", page: 4, rect: { x: 45, y: 335, width: 270, height: 18 } },
+  { name: "previousNameB", label: "Other names used (B)", type: "text", page: 4, rect: { x: 325, y: 335, width: 280, height: 18 } },
+  { name: "passportName", label: "Name as printed on most recent passport", type: "text", page: 4, rect: { x: 280, y: 365, width: 325, height: 18 } },
+  { name: "passportBookNumber", label: "Most recent passport book number", type: "text", page: 4, rect: { x: 280, y: 395, width: 170, height: 18 } },
+  { name: "passportBookIssueDate", label: "Book issue date", type: "text", page: 4, rect: { x: 470, y: 395, width: 135, height: 18 } },
+  { name: "passportCardNumber", label: "Most recent passport card number", type: "text", page: 4, rect: { x: 280, y: 425, width: 170, height: 18 } },
+  { name: "passportCardIssueDate", label: "Card issue date", type: "text", page: 4, rect: { x: 470, y: 425, width: 135, height: 18 } },
+  { name: "nameChangePlace", label: "Place of name change", type: "text", page: 4, rect: { x: 360, y: 455, width: 120, height: 18 } },
+  { name: "nameChangeDate", label: "Date of name change", type: "text", page: 4, rect: { x: 500, y: 455, width: 105, height: 18 } },
+  { name: "signatureDate", label: "Signature date", type: "text", page: 4, rect: { x: 500, y: 540, width: 105, height: 18 } },
+  // Application Page 2 (PDF page index 5)
+  { name: "applicantName", label: "Name of Applicant", type: "text", page: 5, rect: { x: 45, y: 40, width: 360, height: 18 } },
+  { name: "dateOfBirth2", label: "Date of Birth", type: "text", page: 5, rect: { x: 470, y: 40, width: 130, height: 18 } },
+  { name: "height", label: "Height", type: "text", page: 5, rect: { x: 45, y: 75, width: 60, height: 18 } },
+  { name: "hairColor", label: "Hair Color", type: "text", page: 5, rect: { x: 115, y: 75, width: 100, height: 18 } },
+  { name: "eyeColor", label: "Eye Color", type: "text", page: 5, rect: { x: 225, y: 75, width: 100, height: 18 } },
+  { name: "occupation", label: "Occupation", type: "text", page: 5, rect: { x: 340, y: 75, width: 120, height: 18 } },
+  { name: "employer", label: "Employer or School", type: "text", page: 5, rect: { x: 475, y: 75, width: 130, height: 18 } },
+  { name: "additionalPhone1", label: "Additional Phone 1", type: "text", page: 5, rect: { x: 45, y: 110, width: 220, height: 18 } },
+  { name: "additionalPhone2", label: "Additional Phone 2", type: "text", page: 5, rect: { x: 330, y: 110, width: 220, height: 18 } },
+  { name: "permanentAddress1", label: "Permanent Address Line 1", type: "text", page: 5, rect: { x: 45, y: 145, width: 460, height: 18 } },
+  { name: "permanentApt", label: "Permanent Apartment/Unit", type: "text", page: 5, rect: { x: 520, y: 145, width: 85, height: 18 } },
+  { name: "permanentCity", label: "Permanent City", type: "text", page: 5, rect: { x: 45, y: 180, width: 160, height: 18 } },
+  { name: "permanentState", label: "Permanent State", type: "text", page: 5, rect: { x: 220, y: 180, width: 60, height: 18 } },
+  { name: "permanentZip", label: "Permanent Zip Code", type: "text", page: 5, rect: { x: 295, y: 180, width: 75, height: 18 } },
+  { name: "permanentCountry", label: "Permanent Country", type: "text", page: 5, rect: { x: 385, y: 180, width: 155, height: 18 } },
+  { name: "emergencyName", label: "Emergency Contact Name", type: "text", page: 5, rect: { x: 45, y: 215, width: 180, height: 18 } },
+  { name: "emergencyAddress", label: "Emergency Address", type: "text", page: 5, rect: { x: 240, y: 215, width: 240, height: 18 } },
+  { name: "emergencyApt", label: "Emergency Apartment/Unit", type: "text", page: 5, rect: { x: 495, y: 215, width: 85, height: 18 } },
+  { name: "emergencyCity", label: "Emergency City", type: "text", page: 5, rect: { x: 45, y: 250, width: 120, height: 18 } },
+  { name: "emergencyState", label: "Emergency State", type: "text", page: 5, rect: { x: 180, y: 250, width: 60, height: 18 } },
+  { name: "emergencyZip", label: "Emergency Zip Code", type: "text", page: 5, rect: { x: 255, y: 250, width: 75, height: 18 } },
+  { name: "emergencyCountry", label: "Emergency Country", type: "text", page: 5, rect: { x: 345, y: 250, width: 110, height: 18 } },
+  { name: "emergencyEmail", label: "Emergency Email", type: "text", page: 5, rect: { x: 470, y: 250, width: 110, height: 18 } },
+  { name: "emergencyPhone", label: "Emergency Phone Number", type: "text", page: 5, rect: { x: 45, y: 285, width: 120, height: 18 } },
+  { name: "emergencyRelationship", label: "Relationship to Applicant", type: "text", page: 5, rect: { x: 195, y: 285, width: 140, height: 18 } },
+  { name: "departureDate", label: "Departure Date", type: "text", page: 5, rect: { x: 45, y: 335, width: 90, height: 18 } },
+  { name: "returnDate", label: "Return Date", type: "text", page: 5, rect: { x: 150, y: 335, width: 90, height: 18 } },
+  { name: "countriesVisited", label: "Countries To Be Visited", type: "text", page: 5, rect: { x: 270, y: 335, width: 335, height: 18 } },
+];
+
+const schengenVirtualFields: VirtualField[] = [
+  // Page 1 (PDF page index 0)
+  { name: "surname", label: "Surname", type: "text", page: 0, rect: { x: 103, y: 370, width: 330, height: 16 } },
+  { name: "surnameAtBirth", label: "Surname at birth", type: "text", page: 0, rect: { x: 103, y: 388, width: 330, height: 16 } },
+  { name: "firstNames", label: "First name(s)", type: "text", page: 0, rect: { x: 103, y: 406, width: 330, height: 16 } },
+  { name: "dateOfBirth", label: "Date of birth", type: "text", page: 0, rect: { x: 91, y: 455, width: 70, height: 16 } },
+  { name: "placeOfBirth", label: "Place of birth", type: "text", page: 0, rect: { x: 183, y: 440, width: 155, height: 16 } },
+  { name: "countryOfBirth", label: "Country of birth", type: "text", page: 0, rect: { x: 183, y: 490, width: 155, height: 16 } },
+  { name: "currentNationality", label: "Current nationality", type: "text", page: 0, rect: { x: 367, y: 440, width: 70, height: 16 } },
+  { name: "nationalityAtBirth", label: "Nationality at birth", type: "text", page: 0, rect: { x: 367, y: 462, width: 70, height: 16 } },
+  { name: "otherNationalities", label: "Other nationalities", type: "text", page: 0, rect: { x: 367, y: 484, width: 70, height: 16 } },
+  { name: "sex", label: "Sex", type: "text", page: 0, rect: { x: 86, y: 555, width: 60, height: 16 } },
+  { name: "civilStatus", label: "Civil status", type: "text", page: 0, rect: { x: 178, y: 555, width: 240, height: 16 } },
+  { name: "parentalAuthority", label: "Parental authority / legal guardian", type: "text", page: 0, rect: { x: 86, y: 585, width: 350, height: 16 } },
+  { name: "nationalIdentityNumber", label: "National identity number", type: "text", page: 0, rect: { x: 86, y: 610, width: 350, height: 16 } },
+  // Page 2 (PDF page index 1)
+  { name: "travelDocumentType", label: "Type of travel document", type: "text", page: 1, rect: { x: 68, y: 110, width: 360, height: 16 } },
+  { name: "travelDocumentNumber", label: "Number of travel document", type: "text", page: 1, rect: { x: 68, y: 180, width: 90, height: 16 } },
+  { name: "dateOfIssue", label: "Date of issue", type: "text", page: 1, rect: { x: 160, y: 180, width: 90, height: 16 } },
+  { name: "validUntil", label: "Valid until", type: "text", page: 1, rect: { x: 252, y: 180, width: 90, height: 16 } },
+  { name: "issuedBy", label: "Issued by", type: "text", page: 1, rect: { x: 344, y: 180, width: 90, height: 16 } },
+  { name: "familySurname", label: "Family member surname", type: "text", page: 1, rect: { x: 68, y: 250, width: 180, height: 16 } },
+  { name: "familyFirstNames", label: "Family member first name(s)", type: "text", page: 1, rect: { x: 257, y: 250, width: 180, height: 16 } },
+  { name: "familyDateOfBirth", label: "Family member date of birth", type: "text", page: 1, rect: { x: 68, y: 320, width: 90, height: 16 } },
+  { name: "familyNationality", label: "Family member nationality", type: "text", page: 1, rect: { x: 165, y: 320, width: 180, height: 16 } },
+  { name: "familyDocumentNumber", label: "Family member document number", type: "text", page: 1, rect: { x: 349, y: 320, width: 140, height: 16 } },
+  { name: "homeAddress", label: "Home address and email", type: "text", page: 1, rect: { x: 68, y: 420, width: 270, height: 16 } },
+  { name: "telephone", label: "Telephone no.", type: "text", page: 1, rect: { x: 349, y: 420, width: 130, height: 16 } },
+  { name: "residencePermit", label: "Residence permit", type: "text", page: 1, rect: { x: 68, y: 475, width: 360, height: 16 } },
+  { name: "currentOccupation", label: "Current occupation", type: "text", page: 1, rect: { x: 68, y: 510, width: 360, height: 16 } },
+  { name: "numberOfEntries", label: "Number of entries requested", type: "text", page: 1, rect: { x: 441, y: 535, width: 70, height: 16 } },
+  { name: "employer", label: "Employer / educational establishment", type: "text", page: 1, rect: { x: 68, y: 545, width: 360, height: 16 } },
+  { name: "purposeOfJourney", label: "Purpose(s) of the journey", type: "text", page: 1, rect: { x: 68, y: 600, width: 360, height: 16 } },
+  { name: "additionalInfoPurpose", label: "Additional information on purpose of stay", type: "text", page: 1, rect: { x: 68, y: 650, width: 360, height: 16 } },
+  { name: "mainDestination", label: "Member State of main destination", type: "text", page: 1, rect: { x: 68, y: 700, width: 180, height: 16 } },
+  { name: "firstEntryState", label: "Member State of first entry", type: "text", page: 1, rect: { x: 252, y: 700, width: 180, height: 16 } },
+  { name: "intendedArrivalDate", label: "Intended date of arrival", type: "text", page: 1, rect: { x: 68, y: 775, width: 180, height: 16 } },
+  { name: "intendedDepartureDate", label: "Intended date of departure", type: "text", page: 1, rect: { x: 280, y: 775, width: 180, height: 16 } },
+  // Page 3 (PDF page index 2)
+  { name: "fingerprintsCollected", label: "Fingerprints collected previously", type: "text", page: 2, rect: { x: 90, y: 115, width: 60, height: 16 } },
+  { name: "fingerprintsDate", label: "Date fingerprints collected", type: "text", page: 2, rect: { x: 68, y: 140, width: 120, height: 16 } },
+  { name: "fingerprintsNumber", label: "Visa number (if known)", type: "text", page: 2, rect: { x: 250, y: 140, width: 180, height: 16 } },
+  { name: "entryPermitIssuedBy", label: "Entry permit issued by", type: "text", page: 2, rect: { x: 68, y: 200, width: 120, height: 16 } },
+  { name: "entryPermitValidFrom", label: "Entry permit valid from", type: "text", page: 2, rect: { x: 200, y: 200, width: 100, height: 16 } },
+  { name: "entryPermitValidUntil", label: "Entry permit valid until", type: "text", page: 2, rect: { x: 330, y: 200, width: 100, height: 16 } },
+  { name: "invitingPersonName", label: "Inviting person(s) / accommodation", type: "text", page: 2, rect: { x: 68, y: 260, width: 360, height: 16 } },
+  { name: "invitingAddress", label: "Address/email of inviting person", type: "text", page: 2, rect: { x: 68, y: 315, width: 180, height: 16 } },
+  { name: "invitingTelephone", label: "Telephone No", type: "text", page: 2, rect: { x: 257, y: 315, width: 180, height: 16 } },
+  { name: "invitingCompanyName", label: "Inviting company/organisation", type: "text", page: 2, rect: { x: 68, y: 350, width: 360, height: 16 } },
+  { name: "invitingCompanyAddress", label: "Address of inviting company", type: "text", page: 2, rect: { x: 68, y: 405, width: 180, height: 16 } },
+  { name: "invitingCompanyTelephone", label: "Telephone No of company", type: "text", page: 2, rect: { x: 257, y: 405, width: 180, height: 16 } },
+  { name: "costCoveredBy", label: "Cost covered by (applicant)", type: "text", page: 2, rect: { x: 68, y: 450, width: 180, height: 16 } },
+  { name: "costCoveredOther", label: "Cost covered by (other)", type: "text", page: 2, rect: { x: 278, y: 450, width: 180, height: 16 } },
+  { name: "fillerName", label: "Person filling the form (name)", type: "text", page: 2, rect: { x: 68, y: 620, width: 360, height: 16 } },
+  { name: "fillerAddress", label: "Address/email of person filling", type: "text", page: 2, rect: { x: 68, y: 665, width: 180, height: 16 } },
+  { name: "fillerTelephone", label: "Telephone No", type: "text", page: 2, rect: { x: 257, y: 665, width: 180, height: 16 } },
+  // Page 4 (PDF page index 3)
+  { name: "placeAndDate", label: "Place and date", type: "text", page: 3, rect: { x: 65, y: 615, width: 200, height: 16 } },
+];
 
 const commonFaq: FormFAQItem[] = [
   {
@@ -363,6 +484,7 @@ export const FORMS: FormConfig[] = [
     steps: placeholderStepsArray("Form DS-82"),
     commonMistakesHtml: placeholderMistakes("Form DS-82"),
     faq: commonFaq,
+    virtualFields: ds82VirtualFields,
   },
   {
     id: "w-4",
@@ -403,6 +525,7 @@ export const FORMS: FormConfig[] = [
     steps: placeholderStepsArray("Schengen visa application"),
     commonMistakesHtml: placeholderMistakes("Schengen visa application"),
     faq: commonFaq,
+    virtualFields: schengenVirtualFields,
   },
 ];
 

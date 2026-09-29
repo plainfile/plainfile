@@ -42,6 +42,14 @@ export interface SignaturePlacement {
   pngBytes: Uint8Array;
 }
 
+export interface VirtualField {
+  name: string;
+  label: string;
+  type: FieldType;
+  page: number; // 0-based
+  rect: FieldRect; // UI coordinates (top-left), PDF points
+}
+
 export type FillWorkerRequest =
   | { id: number; op: 'inspect'; bytes: Uint8Array }
   | {

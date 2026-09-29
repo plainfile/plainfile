@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -34,6 +34,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { useVisualViewportScroll } from "@/hooks/use-visual-viewport";
 import { getFieldLabel } from "@/lib/field-labels";
+import { FORMS } from "@/lib/forms";
 import { FieldOverlay } from "./FieldOverlay";
 import { SignaturePad } from "./SignaturePad";
 
@@ -173,6 +174,7 @@ export interface FormToolProps {
 }
 
 export function FormTool({ title, description, initialPdf, formId }: FormToolProps) {
+  const formConfig = useMemo(() => FORMS.find((f) => f.id === formId), [formId]);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const previewRef = useRef<HTMLDivElement | null>(null);
@@ -482,10 +484,21 @@ export function FormTool({ title, description, initialPdf, formId }: FormToolPro
           throw new Error("Unexpected worker response");
         }
         const { fields: formFields, pageSizes: sizes } = inspectResponse.result;
-        setFields(formFields);
+        const virtualFields = formConfig?.virtualFields ?? [];
+        const mergedFields: FormFieldInfo[] = [
+          ...formFields,
+          ...virtualFields.map((vf) => ({
+            name: vf.name,
+            type: vf.type,
+            page: vf.page,
+            rect: vf.rect,
+            value: vf.type === "checkbox" ? false : "",
+          })),
+        ];
+        setFields(mergedFields);
         setPageSizes(sizes);
         const initialValues: Record<string, string | boolean> = {};
-        for (const field of formFields) {
+        for (const field of mergedFields) {
           initialValues[field.name] = field.value;
         }
         setValues(initialValues);
@@ -499,7 +512,7 @@ export function FormTool({ title, description, initialPdf, formId }: FormToolPro
         setError(err instanceof Error ? err.message : String(err));
       }
     },
-    [ensureRedactWorker, ensureFillWorker],
+    [ensureRedactWorker, ensureFillWorker, formConfig],
   );
 
   const initialLoadStartedRef = useRef(false);
@@ -631,13 +644,37 @@ export function FormTool({ title, description, initialPdf, formId }: FormToolPro
       setLoading(true);
       setError(null);
       setProgress(30);
+
+      // Split values into AcroForm fields and manually-defined virtual fields.
+      const virtualFieldMap = new Map(
+        (formConfig?.virtualFields ?? []).map((vf) => [vf.name, vf]),
+      );
+      const acroValues: Record<string, string | boolean> = {};
+      const virtualOverlays: TextOverlay[] = [];
+      for (const [name, value] of Object.entries(values)) {
+        const vf = virtualFieldMap.get(name);
+        if (vf) {
+          if (vf.type === "text" && typeof value === "string" && value.trim() !== "") {
+            virtualOverlays.push({
+              page: vf.page,
+              x: vf.rect.x,
+              y: vf.rect.y + vf.rect.height - DEFAULT_OVERLAY_FONT_SIZE - 2,
+              text: value,
+              fontSize: DEFAULT_OVERLAY_FONT_SIZE,
+            });
+          }
+        } else {
+          acroValues[name] = value;
+        }
+      }
+
       const worker = await ensureFillWorker();
       const response = await postFillMessage(worker, {
         id: 2,
         op: "fill",
         bytes: originalBytesRef.current,
-        values,
-        overlays: textOverlays,
+        values: acroValues,
+        overlays: [...textOverlays, ...virtualOverlays],
         signature: signature ?? undefined,
         flatten: true,
       });
@@ -653,7 +690,7 @@ export function FormTool({ title, description, initialPdf, formId }: FormToolPro
       setLoading(false);
       setError(err instanceof Error ? err.message : String(err));
     }
-  }, [values, textOverlays, signature, fileName, ensureFillWorker, downloadFile]);
+  }, [values, textOverlays, signature, fileName, ensureFillWorker, downloadFile, formConfig]);
 
   const handleDownload = useCallback(() => {
     if (!outputBytes || !fileName) return;
