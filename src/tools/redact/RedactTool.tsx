@@ -16,8 +16,8 @@ import type {
   SearchMatch,
   WorkerRequest,
   WorkerResponse,
-} from "@/lib/mupdf-engine";
-import { PRESET_PATTERNS } from "@/lib/mupdf-engine";
+} from "./engine";
+import { PRESET_PATTERNS } from "./engine";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,7 +40,7 @@ const SCALE = RENDER_DPI / 72;
 function createWorker(): Promise<Worker> {
   return new Promise((resolve, reject) => {
     const worker = new Worker(
-      new URL("../workers/redact.worker.ts", import.meta.url),
+      new URL("./worker.ts", import.meta.url),
       { type: "module" },
     );
     const readyHandler = (event: MessageEvent) => {

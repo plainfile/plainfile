@@ -9,7 +9,7 @@ import type {
   VerifyPayload,
   WorkerRequest,
   WorkerResponse,
-} from "@/lib/mupdf-engine";
+} from "./engine";
 import * as mupdf from "mupdf";
 
 let currentDoc: mupdf.PDFDocument | null = null;

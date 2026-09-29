@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
-import { RedactTool } from "@/components/RedactTool";
+import { RedactTool } from "./RedactTool";
 import { REDACTION_FAQ } from "@/lib/faq";
 import { Link } from "react-router";
 import {
@@ -13,7 +13,7 @@ import {
   BookOpen,
   FileText,
 } from "lucide-react";
-import { SCENARIOS } from "@/lib/scenarios";
+import { SCENARIOS } from "./scenarios";
 
 const scenarioIcons = {
   "bank-statement": Landmark,

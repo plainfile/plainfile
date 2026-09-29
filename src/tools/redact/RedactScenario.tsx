@@ -1,8 +1,8 @@
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
-import { RedactTool } from "@/components/RedactTool";
-import type { ScenarioConfig } from "@/lib/scenarios";
-import { SCENARIOS } from "@/lib/scenarios";
+import { RedactTool } from "./RedactTool";
+import type { ScenarioConfig } from "./scenarios";
+import { SCENARIOS } from "./scenarios";
 import { Link } from "react-router";
 import { ShieldCheck, CircleCheck, CircleX, ArrowRight, BookOpen } from "lucide-react";
 

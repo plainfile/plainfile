@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
-import { FORMS } from "@/lib/forms";
+import { FORMS } from "./forms";
 import { Link } from "react-router";
 import { FileText, ArrowRight } from "lucide-react";
 

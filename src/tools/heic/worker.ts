@@ -1,4 +1,4 @@
-import type { HeicWorkerRequest, HeicWorkerResponse } from "@/lib/heic-engine";
+import type { HeicWorkerRequest, HeicWorkerResponse } from "./engine";
 import wasmUrl from "libheif-js/libheif-wasm/libheif.wasm?url";
 
 interface HeifImageHandle {

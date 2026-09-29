@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, Link } from 'react-router';
 import { Layout } from '@/components/Layout';
 import { SEO } from '@/components/SEO';
-import { FormTool } from '@/components/FormTool';
-import { getFormByPath, type FormStep } from '@/lib/forms';
+import { FormTool } from './FormTool';
+import { getFormByPath, type FormStep } from './forms';
 import { Loader2, ExternalLink, AlertTriangle } from 'lucide-react';
 
 function parseStepsHtml(stepsHtml: string): FormStep[] {

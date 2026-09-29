@@ -8,7 +8,7 @@ export interface FormFAQItem {
   answer: string;
 }
 
-import type { VirtualField } from "./fill-engine";
+import type { VirtualField } from "./engine";
 
 export interface FormConfig {
   id: string;

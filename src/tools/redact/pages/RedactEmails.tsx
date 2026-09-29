@@ -1,5 +1,5 @@
-import RedactScenario from "@/pages/RedactScenario";
-import { getScenarioById } from "@/lib/scenarios";
+import RedactScenario from "../RedactScenario";
+import { getScenarioById } from "../scenarios";
 
 const scenario = getScenarioById("emails")!;
 

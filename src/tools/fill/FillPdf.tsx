@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
-import { FormTool } from "@/components/FormTool";
+import { FormTool } from "./FormTool";
 import { Link } from "react-router";
 
 export default function FillPdf() {

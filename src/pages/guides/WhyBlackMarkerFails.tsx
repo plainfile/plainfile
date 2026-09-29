@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
-import { MarkerDemo } from "@/components/MarkerDemo";
+import { MarkerDemo } from "@/tools/redact/MarkerDemo";
 import { Link } from "react-router";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 

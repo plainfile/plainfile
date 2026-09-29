@@ -18,7 +18,7 @@ import type {
   PageInfo,
   WorkerRequest,
   WorkerResponse,
-} from "@/lib/mupdf-engine";
+} from "../redact/engine";
 import type {
   FillWorkerRequest,
   FillWorkerResponse,
@@ -26,15 +26,15 @@ import type {
   PageSize,
   SignaturePlacement,
   TextOverlay,
-} from "@/lib/fill-engine";
+} from "./engine";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { useVisualViewportScroll } from "@/hooks/use-visual-viewport";
-import { getFieldLabel } from "@/lib/field-labels";
-import { FORMS } from "@/lib/forms";
+import { getFieldLabel } from "./field-labels";
+import { FORMS } from "./forms";
 import { FieldOverlay } from "./FieldOverlay";
 import { SignaturePad } from "./SignaturePad";
 
@@ -57,7 +57,7 @@ function formatSize(bytes: number): string {
 function createRedactWorker(onFatal?: (message: string) => void): Promise<Worker> {
   return new Promise((resolve, reject) => {
     const worker = new Worker(
-      new URL("../workers/redact.worker.ts", import.meta.url),
+      new URL("../redact/worker.ts", import.meta.url),
       { type: "module" },
     );
     const readyHandler = (event: MessageEvent) => {
@@ -111,7 +111,7 @@ function postRedactMessage(
 function createFillWorker(onFatal?: (message: string) => void): Promise<Worker> {
   return new Promise((resolve, reject) => {
     const worker = new Worker(
-      new URL("../workers/fill.worker.ts", import.meta.url),
+      new URL("./worker.ts", import.meta.url),
       { type: "module" },
     );
     const readyHandler = (event: MessageEvent) => {

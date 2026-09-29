@@ -18,7 +18,7 @@ import {
   AlertCircle,
   FolderArchive,
 } from "lucide-react";
-import type { HeicTargetFormat, HeicWorkerRequest, HeicWorkerResponse } from "@/lib/heic-engine";
+import type { HeicTargetFormat, HeicWorkerRequest, HeicWorkerResponse } from "./engine";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -62,7 +62,7 @@ interface WorkerRef {
 function createWorker(): Promise<WorkerRef> {
   return new Promise((resolve, reject) => {
     const worker = new Worker(
-      new URL("../workers/heic.worker.ts", import.meta.url),
+      new URL("./worker.ts", import.meta.url),
       { type: "module" },
     );
 

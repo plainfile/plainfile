@@ -5,7 +5,7 @@ import type {
   FormFieldInfo,
   InspectResult,
   PageSize,
-} from "@/lib/fill-engine";
+} from "./engine";
 import type {
   PDFCheckBox,
   PDFDropdown,

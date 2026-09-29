@@ -6,23 +6,24 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CookieConsent } from "@/components/CookieConsent";
 import { LogoMark } from "@/components/LogoMark";
+import { TOOL_ROUTES } from "@/routes-manifest";
 
 // Set after the Product Hunt launch: the numeric post id from the live page URL.
 // While empty, the footer badge is not rendered (no broken third-party image).
 const PRODUCT_HUNT_POST_ID = "1245542";
 
+// Навигация генерируется из routes-manifest: пункт появляется, если у роута
+// задан navLabel (шапка) или footerLabel (футер). Не добавляйте ссылки вручную.
 const nav = [
   { path: "/", label: "Home" },
   { path: "/tools", label: "Tools" },
-  { path: "/pdf/redact", label: "Redact PDF" },
-  { path: "/forms", label: "PDF Forms"},
+  ...TOOL_ROUTES.filter((r) => r.navLabel).map((r) => ({ path: r.path, label: r.navLabel! })),
   { path: "/privacy", label: "Privacy" },
 ];
 
 const footerNav = [
   { path: "/tools", label: "Tools" },
-  { path: "/pdf/redact", label: "Redact PDF" },
-  { path: "/forms", label: "PDF Forms"},
+  ...TOOL_ROUTES.filter((r) => r.footerLabel).map((r) => ({ path: r.path, label: r.footerLabel! })),
   { path: "/privacy", label: "Privacy" },
 ];
 
