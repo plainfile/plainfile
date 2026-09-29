@@ -11,7 +11,7 @@
 
 import { type ComponentType, lazy } from 'react';
 import type { LucideIcon } from 'lucide-react';
-import { FileText, FilePenLine, Files, ImageIcon } from 'lucide-react';
+import { FileText, FilePenLine, Files, ImageIcon, Eraser, Eye } from 'lucide-react';
 
 const Home = lazy(() => import('./pages/Home'));
 const Tools = lazy(() => import('./pages/Tools'));
@@ -34,6 +34,9 @@ const HeicWontOpenOnWindows = lazy(() => import('./tools/heic/pages/HeicWontOpen
 const HeicCantUpload = lazy(() => import('./tools/heic/pages/HeicCantUpload'));
 const HeicConvertOnIphone = lazy(() => import('./tools/heic/pages/HeicConvertOnIphone'));
 const HeicNotSupportedInCanva = lazy(() => import('./tools/heic/pages/HeicNotSupportedInCanva'));
+const ExifRemove = lazy(() => import('./tools/exif/ExifRemove'));
+const ExifViewer = lazy(() => import('./tools/exif/ExifViewer'));
+const ExifRemoveGps = lazy(() => import('./tools/exif/ExifRemoveGps'));
 
 export type RouteKind = 'page' | 'tool' | 'scenario' | 'guide';
 
@@ -105,6 +108,17 @@ export const ROUTES: RouteManifestItem[] = [
   { path: '/heic/cant-upload', label: "Can't Upload HEIC", kind: 'scenario', priority: 0.8, changefreq: 'weekly', element: HeicCantUpload },
   { path: '/heic/convert-on-iphone', label: 'Convert HEIC on iPhone', kind: 'scenario', priority: 0.8, changefreq: 'weekly', element: HeicConvertOnIphone },
   { path: '/heic/not-supported-in-canva', label: 'HEIC Not Supported in Canva', kind: 'scenario', priority: 0.8, changefreq: 'weekly', element: HeicNotSupportedInCanva },
+  {
+    path: '/exif/remove', label: 'Remove EXIF Metadata', kind: 'tool', priority: 0.9, changefreq: 'weekly', element: ExifRemove,
+    description: 'Strip EXIF, GPS and hidden metadata from JPEG, PNG and WebP photos — losslessly, in your browser.',
+    icon: Eraser, status: 'ready',
+  },
+  {
+    path: '/exif/viewer', label: 'EXIF Viewer', kind: 'tool', priority: 0.9, changefreq: 'weekly', element: ExifViewer,
+    description: 'Inspect EXIF metadata, camera settings and GPS coordinates of your photos. Nothing is uploaded.',
+    icon: Eye, status: 'ready',
+  },
+  { path: '/exif/remove-gps', label: 'Remove GPS From Photo', kind: 'scenario', priority: 0.8, changefreq: 'weekly', element: ExifRemoveGps },
 ];
 
 /** Инструменты для каталога на /tools — в порядке манифеста. */

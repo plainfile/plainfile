@@ -290,11 +290,14 @@ export function stripApp1Prefix(dumped: Uint8Array): Uint8Array {
 }
 
 /**
- * Минимальный JPEG-конверт (SOI + APP1 + EOI) вокруг TIFF-пayload,
- * чтобы piexif.load мог разобрать EXIF из PNG/WebP-чанка.
+ * Minimal JPEG wrapper (SOI + APP1 + SOS) around a raw TIFF payload so that
+ * piexifjs can parse EXIF extracted from PNG/WebP chunks (see sosStub below).
  */
 export function buildSyntheticJpeg(tiffPayload: Uint8Array): Uint8Array {
-  const out = new Uint8Array(2 + 2 + 2 + EXIF_APP1_PREFIX_LENGTH + tiffPayload.length + 2);
+  // Stub SOS segment: piexifjs splitIntoSegments loops until it sees the SOS
+  // marker (0xFFDA); without it the parser runs past the end of the buffer.
+  const sosStub = new Uint8Array([0xff, 0xda, 0x00, 0x08, 0x01, 0x01, 0x00, 0x3f, 0x00]);
+  const out = new Uint8Array(2 + 2 + 2 + EXIF_APP1_PREFIX_LENGTH + tiffPayload.length + sosStub.length);
   out[0] = 0xff; out[1] = 0xd8; // SOI
   out[2] = 0xff; out[3] = 0xe1; // APP1
   const segLength = 2 + EXIF_APP1_PREFIX_LENGTH + tiffPayload.length;
@@ -302,8 +305,7 @@ export function buildSyntheticJpeg(tiffPayload: Uint8Array): Uint8Array {
   out[5] = segLength & 0xff;
   out.set([0x45, 0x78, 0x69, 0x66, 0x00, 0x00], 6); // "Exif\0\0"
   out.set(tiffPayload, 6 + EXIF_APP1_PREFIX_LENGTH);
-  out[out.length - 2] = 0xff;
-  out[out.length - 1] = 0xd9; // EOI
+  out.set(sosStub, 6 + EXIF_APP1_PREFIX_LENGTH + tiffPayload.length);
   return out;
 }
 

@@ -34,6 +34,14 @@ export default function Privacy() {
           over it. After applying redactions, the tool runs an automatic verification step to
           confirm that the selected terms are no longer present.
         </p>
+        <h2 className="mt-8 text-xl font-semibold">EXIF metadata and the optional map</h2>
+        <p>
+          The EXIF viewer and remover parse photo metadata locally — the file never leaves your
+          device. The only exception is the optional GPS map: it loads only after you explicitly
+          click "Show on map", and its tile requests go to openstreetmap.org, revealing the
+          approximate region of the coordinates to that third party. No file data is ever included
+          in those requests.
+        </p>
         <h2 className="mt-8 text-xl font-semibold">Open-source philosophy</h2>
         <p>
           The tool runs entirely in your browser and the code that handles your files is available
