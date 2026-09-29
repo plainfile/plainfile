@@ -137,6 +137,7 @@ export function HeicTool({ title, description }: HeicToolProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const workerPromiseRef = useRef<Promise<WorkerRef> | null>(null);
   const isCancelledRef = useRef(false);
+  const isProcessingRef = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const [files, setFiles] = useState<QueuedFile[]>([]);
@@ -265,14 +266,16 @@ export function HeicTool({ title, description }: HeicToolProps) {
     setOverallProgress(0);
     await resetWorker();
     isCancelledRef.current = false;
+    isProcessingRef.current = false;
   }, [resetWorker]);
 
   const processQueue = useCallback(async () => {
-    if (isCancelledRef.current) return;
+    if (isCancelledRef.current || isProcessingRef.current) return;
 
     const queued = files.filter((f) => f.status === "queued");
     if (queued.length === 0) return;
 
+    isProcessingRef.current = true;
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
@@ -343,6 +346,7 @@ export function HeicTool({ title, description }: HeicToolProps) {
     } catch (err: unknown) {
       setGlobalError(err instanceof Error ? err.message : String(err));
     } finally {
+      isProcessingRef.current = false;
       abortControllerRef.current = null;
       setOverallProgress(0);
     }
@@ -350,11 +354,10 @@ export function HeicTool({ title, description }: HeicToolProps) {
 
   useEffect(() => {
     // Auto-start the worker queue whenever new files are queued and the worker is idle.
-    if (!isBusy && files.some((f) => f.status === "queued")) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (!isProcessingRef.current && files.some((f) => f.status === "queued")) {
       void processQueue();
     }
-  }, [files, format, quality, isBusy, processQueue]);
+  }, [files, format, quality, processQueue]);
 
   const handleDownloadOne = useCallback((item: QueuedFile) => {
     if (!item.result) return;
