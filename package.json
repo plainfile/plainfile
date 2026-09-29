@@ -19,7 +19,8 @@
     "test": "node verify.mjs",
     "check:live": "node scripts/check-live.mjs",
     "predeploy": "npm run build ; npm run postbuild; npm run prerender",
-    "deploy": "npm run predeploy; npx wrangler pages deploy ./dist --project-name=plainfile"
+    "deploy": "npm run predeploy; npx wrangler pages deploy ./dist --project-name=plainfile",
+    "verify:exif": "tsx verify-exif.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
