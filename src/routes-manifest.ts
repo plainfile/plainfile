@@ -16,6 +16,11 @@ const RedactForFoia = lazy(() => import('./pages/scenarios/RedactForFoia'));
 const HowToRedactPdfProperly = lazy(() => import('./pages/guides/HowToRedactPdfProperly'));
 const WhyBlackMarkerFails = lazy(() => import('./pages/guides/WhyBlackMarkerFails'));
 const PrivacyScanPdfAlternative = lazy(() => import('./pages/guides/PrivacyScanPdfAlternative'));
+const HeicToJpg = lazy(() => import('./pages/HeicToJpg'));
+const HeicWontOpenOnWindows = lazy(() => import('./pages/scenarios/HeicWontOpenOnWindows'));
+const HeicCantUpload = lazy(() => import('./pages/scenarios/HeicCantUpload'));
+const HeicConvertOnIphone = lazy(() => import('./pages/scenarios/HeicConvertOnIphone'));
+const HeicNotSupportedInCanva = lazy(() => import('./pages/scenarios/HeicNotSupportedInCanva'));
 
 export interface RouteManifestItem {
   path: string;
@@ -47,4 +52,9 @@ export const ROUTES: RouteManifestItem[] = [
   { path: '/guides/how-to-redact-pdf-properly', label: 'How to Redact a PDF Properly', priority: 0.7, changefreq: 'monthly', element: HowToRedactPdfProperly },
   { path: '/guides/why-black-marker-redaction-fails', label: 'Why Black Marker Redaction Fails', priority: 0.6, changefreq: 'monthly', element: WhyBlackMarkerFails },
   { path: '/compare/privacyscanpdf-alternative', label: 'PrivacyScanPDF Alternative', priority: 0.6, changefreq: 'monthly', element: PrivacyScanPdfAlternative },
+  { path: '/heic/to-jpg', label: 'HEIC to JPG', priority: 0.9, changefreq: 'weekly', element: HeicToJpg },
+  { path: '/heic/wont-open-on-windows', label: "HEIC Won't Open on Windows", priority: 0.8, changefreq: 'weekly', element: HeicWontOpenOnWindows },
+  { path: '/heic/cant-upload', label: "Can't Upload HEIC", priority: 0.8, changefreq: 'weekly', element: HeicCantUpload },
+  { path: '/heic/convert-on-iphone', label: 'Convert HEIC on iPhone', priority: 0.8, changefreq: 'weekly', element: HeicConvertOnIphone },
+  { path: '/heic/not-supported-in-canva', label: 'HEIC Not Supported in Canva', priority: 0.8, changefreq: 'weekly', element: HeicNotSupportedInCanva },
 ];

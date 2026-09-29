@@ -55,6 +55,11 @@ const VARIANTS = [
     title: "Schengen Visa Application Form — Fill Online Free, No Sign Up",
     desc: "Fill the Schengen visa application form online for free. No sign-up, no upload — complete the EU short-stay visa form in your browser.",
   },
+  {
+    id: "heic",
+    title: "HEIC to JPG Converter — Free Batch, No Upload, No Sign Up",
+    desc: "Convert iPhone HEIC photos to JPG or PNG right in your browser. Batch convert, ZIP download, metadata stripped.",
+  },
 ];
 
 const VIEWPORT = { width: 1200, height: 630 };

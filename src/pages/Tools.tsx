@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { FileText, FilePenLine, Files, Landmark, UserRound, Stethoscope } from "lucide-react";
+import { FileText, FilePenLine, Files, Landmark, UserRound, Stethoscope, ImageIcon } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { Badge } from "@/components/ui/badge";
 import { SEO } from "@/components/SEO";
@@ -28,6 +28,14 @@ const tools = [
     path: "/forms",
     status: "ready",
     icon: Files,
+  },
+  {
+    id: "heic-to-jpg",
+    name: "HEIC to JPG",
+    description: "Convert iPhone HEIC photos to JPG or PNG in your browser. Batch, ZIP, no upload.",
+    path: "/heic/to-jpg",
+    status: "ready",
+    icon: ImageIcon,
   },
   {
     id: "redact-bank-statement",
@@ -60,7 +68,7 @@ export default function Tools() {
     <Layout>
       <SEO
         title="All Tools"
-        description="Every PlainFile tool runs 100% in your browser: PDF redaction, HEIC conversion, EXIF removal, form filling. Free, unlimited, private by design."
+        description="Every PlainFile tool runs 100% in your browser: PDF redaction, HEIC conversion, form filling. Free, unlimited, private by design."
         path="/tools"
       />
       <h1 className="mb-8 text-3xl font-bold tracking-tight">Tools</h1>

@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Shield, Lock, FileText } from "lucide-react";
+import { Shield, Lock, FileText, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
@@ -39,6 +39,13 @@ export default function Home() {
           <h3 className="mb-2 text-lg font-semibold">True redaction</h3>
           <p className="text-sm text-muted-foreground">
             Remove text and images from PDFs permanently — not just black boxes on top.
+          </p>
+        </div>
+        <div className="rounded-xl border bg-card p-6 shadow-sm">
+          <ImageIcon className="mb-4 h-8 w-8 text-[#0066CC]" />
+          <h3 className="mb-2 text-lg font-semibold">HEIC to JPG</h3>
+          <p className="text-sm text-muted-foreground">
+            Convert iPhone HEIC photos to JPG or PNG locally. Batch, ZIP, metadata stripped.
           </p>
         </div>
         <div className="rounded-xl border bg-card p-6 shadow-sm">
