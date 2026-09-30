@@ -37,6 +37,10 @@ const HeicNotSupportedInCanva = lazy(() => import('./tools/heic/pages/HeicNotSup
 const ExifRemove = lazy(() => import('./tools/exif/ExifRemove'));
 const ExifViewer = lazy(() => import('./tools/exif/ExifViewer'));
 const ExifRemoveGps = lazy(() => import('./tools/exif/ExifRemoveGps'));
+const ExifOnIphone = lazy(() => import('./tools/exif/ExifOnIphone'));
+const RemoveMetadataBeforeSelling = lazy(() => import('./pages/guides/RemoveMetadataBeforeSelling'));
+const DoesInstagramRemoveExif = lazy(() => import('./pages/guides/DoesInstagramRemoveExif'));
+const RemoveLocationKeepCameraSettings = lazy(() => import('./pages/guides/RemoveLocationKeepCameraSettings'));
 
 export type RouteKind = 'page' | 'tool' | 'scenario' | 'guide';
 
@@ -119,6 +123,10 @@ export const ROUTES: RouteManifestItem[] = [
     icon: Eye, status: 'ready',
   },
   { path: '/exif/remove-gps', label: 'Remove GPS From Photo', kind: 'scenario', priority: 0.8, changefreq: 'weekly', element: ExifRemoveGps },
+  { path: '/exif/on-iphone', label: 'Remove EXIF Location on iPhone', kind: 'scenario', priority: 0.7, changefreq: 'monthly', element: ExifOnIphone },
+  { path: '/guides/remove-metadata-before-selling', label: 'Remove Photo Metadata Before Selling Online', kind: 'guide', priority: 0.7, changefreq: 'monthly', element: RemoveMetadataBeforeSelling },
+  { path: '/guides/does-instagram-remove-exif', label: 'Does Instagram Remove EXIF Data?', kind: 'guide', priority: 0.7, changefreq: 'monthly', element: DoesInstagramRemoveExif },
+  { path: '/guides/remove-location-keep-camera-settings', label: 'Remove Location, Keep Camera Settings', kind: 'guide', priority: 0.6, changefreq: 'monthly', element: RemoveLocationKeepCameraSettings },
 ];
 
 /** Инструменты для каталога на /tools — в порядке манифеста. */

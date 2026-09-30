@@ -56,7 +56,7 @@ export default function RedactPdf() {
     <Layout>
       <SEO
         title="Redact PDF Online — Free, No Upload, No Sign Up"
-        description="True PDF redaction in your browser: deletes text, images and metadata — then verifies nothing is extractable. Free, unlimited, files never leave your device."
+        description="True PDF redaction in your browser: deletes text, images and metadata — then verifies nothing is extractable. Free, no account, files never leave your device."
         path="/pdf/redact"
         jsonLd={[softwareApplicationLd, faqLd]}
       />

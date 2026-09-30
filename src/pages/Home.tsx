@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Shield, Lock, FileText, ImageIcon } from "lucide-react";
+import { Shield, Lock, FileText, ImageIcon, MapPin, Files } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { SEO } from "@/components/SEO";
@@ -35,18 +35,40 @@ export default function Home() {
 
       <section className="grid gap-6 py-12 sm:grid-cols-2 lg:grid-cols-3">
         <div className="rounded-xl border bg-card p-6 shadow-sm">
+          <Link to="/pdf/redact">
           <Lock className="mb-4 h-8 w-8 text-[#0066CC]" />
           <h3 className="mb-2 text-lg font-semibold">True redaction</h3>
           <p className="text-sm text-muted-foreground">
             Remove text and images from PDFs permanently — not just black boxes on top.
           </p>
+          </Link>
         </div>
         <div className="rounded-xl border bg-card p-6 shadow-sm">
+          <Link to="/forms">
+          <Files className="mb-4 h-8 w-8 text-[#0066CC]" />
+          <h3 className="mb-2 text-lg font-semibold">Government Forms</h3>
+          <p className="text-sm text-muted-foreground">
+            Fill W-9, I-9 and other government forms with embedded templates.
+          </p>
+          </Link>
+        </div>
+        <div className="rounded-xl border bg-card p-6 shadow-sm">
+          <Link to="/heic/to-jpg">
           <ImageIcon className="mb-4 h-8 w-8 text-[#0066CC]" />
           <h3 className="mb-2 text-lg font-semibold">HEIC to JPG</h3>
           <p className="text-sm text-muted-foreground">
             Convert iPhone HEIC photos to JPG or PNG locally. Batch, ZIP, metadata stripped.
           </p>
+          </Link>
+        </div>
+        <div className="rounded-xl border bg-card p-6 shadow-sm">
+          <Link to="/exif/remove">
+          <MapPin className="mb-4 h-8 w-8 text-[#0066CC]" />
+          <h3 className="mb-2 text-lg font-semibold">EXIF removal</h3>
+          <p className="text-sm text-muted-foreground">
+            See and strip hidden photo metadata — GPS location, timestamps, camera serials. Lossless.
+          </p>
+          </Link>
         </div>
         <div className="rounded-xl border bg-card p-6 shadow-sm">
           <FileText className="mb-4 h-8 w-8 text-[#0066CC]" />
