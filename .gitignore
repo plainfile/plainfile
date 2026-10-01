@@ -6,3 +6,19 @@ docker-compose.yml
 .DS_Store
 .env
 .wrangler
+
+# Service-account credentials for scripts/gsc-snapshot.mjs (never commit)
+gsc-service-account.json
+*service-account*.json
+
+# IndexNow submission hashes (local build state)
+.indexnow-state.json
+
+
+*.log
+.env
+.env.local
+*.pdf
+!fixtures/*.pdf
+gsc-service-account.json
+*service-account*.json

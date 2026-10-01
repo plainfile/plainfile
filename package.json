@@ -21,7 +21,10 @@
     "predeploy": "npm run build ; npm run postbuild; npm run prerender",
     "deploy": "npm run predeploy; npx wrangler pages deploy ./dist --project-name=plainfile",
     "verify:exif": "tsx verify-exif.mts",
-    "audit:links": "node scripts/audit-links.mjs"
+    "audit:links": "node scripts/audit-links.mjs",
+    "seo:snapshot": "node scripts/gsc-snapshot.mjs",
+    "indexnow": "node scripts/indexnow.mjs",
+    "indexnow:key": "node scripts/indexnow.mjs --generate-key"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
