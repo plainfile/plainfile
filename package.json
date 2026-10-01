@@ -22,6 +22,8 @@
     "deploy": "npm run predeploy; npx wrangler pages deploy ./dist --project-name=plainfile",
     "verify:exif": "tsx verify-exif.mts",
     "audit:links": "node scripts/audit-links.mjs",
+    "audit:fixture": "node scripts/make-audit-fixture.mjs",
+    "audit:redaction": "node scripts/redaction-audit.mjs",
     "seo:snapshot": "node scripts/gsc-snapshot.mjs",
     "indexnow": "node scripts/indexnow.mjs",
     "indexnow:key": "node scripts/indexnow.mjs --generate-key"
